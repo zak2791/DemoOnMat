@@ -22,6 +22,7 @@ private slots:
     void slotNewConnection(void);
     void slotServerRead(void);
     void slotClientDisconnected(void);
+    void errorOccurred(QAbstractSocket::SocketError);
 
 };
 

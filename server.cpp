@@ -28,6 +28,7 @@ void Server::slotNewConnection()
 
     connect(tcpSocket, &QTcpSocket::readyRead, this, &Server::slotServerRead);
     connect(tcpSocket, &QTcpSocket::disconnected, this, &Server::slotClientDisconnected);
+    connect(tcpSocket, &QAbstractSocket::errorOccurred, this, &Server::errorOccurred);
     qDebug()<<"new";
 }
 
@@ -47,3 +48,9 @@ void Server::slotClientDisconnected()
     tcpSocket->close();
     qDebug()<<"close";
 }
+
+void Server::errorOccurred(QAbstractSocket::SocketError error)
+{
+    qDebug()<<error;
+}
+
