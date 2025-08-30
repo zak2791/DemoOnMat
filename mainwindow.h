@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "controller.h"
 #include "qdialog.h"
 #include "server.h"
 #include "ui_dialogConnection.h"
@@ -19,13 +20,19 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    QListWidget* getListCategories(void){return listCategories;}
 
 private:
     Ui::MainWindow *ui;
     QDialog formSettings;
     Ui::dlgConnection uiDlg;
     QString settings;
-    Server* server;
+
+    QListWidget* listCategories;
+
+    Controller* controller;
+
+    void fillMenuLastCompetitions(void);
 
 };
 #endif // MAINWINDOW_H

@@ -1,39 +1,51 @@
 #include "mainwindow.h"
 
+#include "connectiondialog.h"
 #include "ui_mainwindow.h"
 
 #include <QSettings>
+#include <QDir>
+#include <QActionGroup>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    qDebug()<<"agt";
-    // QWebEngineView view;
-    // view.load(QUrl("https://qt-project.org/"));
-    // view.resize(1024, 750);
-    // view.show();
 
-    server = new Server(this);
-
-    uiDlg.setupUi(&formSettings);
-
-    connect(uiDlg.sbPortTCP, &QSpinBox::valueChanged, this, [this](int value){
-        QSettings settings("settings.ini", QSettings::IniFormat);
-        settings.beginGroup("connections");
-        settings.setValue("tcpPort", value);
-        settings.endGroup();
-        server->setPort(value);
-    });
+    controller = new Controller(this);
+    //server = new Server(this);
+    listCategories = ui->listWidget;
 
     connect(ui->actConnection, &QAction::triggered, this, [this](){
-        qDebug()<<"agt";
-        int ret = formSettings.exec();
+        ConnectionDialog dlg;
+        int ret = dlg.exec();
+        if(ret == QDialog::Accepted)
+            controller->changeConnection();
     });
+
+    fillMenuLastCompetitions();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::fillMenuLastCompetitions()
+{
+    QDir dir = QDir::current();
+    QFileInfoList lFiles = dir.entryInfoList({"*.db"}, QDir::Files, QDir::Time);
+    if(lFiles.count() > 0){
+        QActionGroup* gr = new QActionGroup(this);
+        foreach(QFileInfo inf, lFiles){
+            QAction* act = gr->addAction(inf.completeBaseName());
+            act->setCheckable(true);
+            connect(act, &QAction::triggered, this, [act, this]{
+                controller->openCompetition(act->text());
+            });
+        }
+        ui->mOpenLast->addActions(gr->actions());
+    }
+
 }

@@ -5,16 +5,19 @@
 
 #include <QTcpServer>
 #include <QTcpSocket>
+#include <QUdpSocket>
 
 class Server : public QObject
 {
 public:
     Server(QObject* parent = nullptr);
-    void setPort(int _port){port = _port;}
+    void changeConnection(void);
 
 private:
     int port;
+    int udpPort;
 
+    QUdpSocket* udpSocket;
     QTcpServer* tcpServer;
     QTcpSocket* tcpSocket;
 
@@ -23,6 +26,7 @@ private slots:
     void slotServerRead(void);
     void slotClientDisconnected(void);
     void errorOccurred(QAbstractSocket::SocketError);
+    void slotDatagram(void);
 
 };
 

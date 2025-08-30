@@ -54,9 +54,14 @@
     <property name="title">
      <string>Файл</string>
     </property>
+    <widget class="QMenu" name="mOpenLast">
+     <property name="title">
+      <string>Последние</string>
+     </property>
+    </widget>
     <addaction name="action"/>
     <addaction name="action_2"/>
-    <addaction name="action_3"/>
+    <addaction name="mOpenLast"/>
     <addaction name="action_4"/>
    </widget>
    <widget class="QMenu" name="menu_2">
@@ -79,11 +84,6 @@
     <string>Создать</string>
    </property>
   </action>
-  <action name="action_3">
-   <property name="text">
-    <string>Последние</string>
-   </property>
-  </action>
   <action name="action_4">
    <property name="text">
     <string>Выход</string>
@@ -92,6 +92,11 @@
   <action name="actConnection">
    <property name="text">
     <string>Настройки связи</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string> </string>
    </property>
   </action>
  </widget>

@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network
 
@@ -9,16 +9,28 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    category.cpp \
+    category_0_0.cpp \
+    connectiondialog.cpp \
+    controller.cpp \
+    databasecontroller.cpp \
+    datatransfercontroller.cpp \
     main.cpp \
     mainwindow.cpp \
     server.cpp
 
 HEADERS += \
+    category.h \
+    category_0_0.h \
+    connectiondialog.h \
+    controller.h \
+    databasecontroller.h \
+    datatransfercontroller.h \
     mainwindow.h \
     server.h
 
 FORMS += \
-    dialogConnection.ui \
+    connectiondialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.

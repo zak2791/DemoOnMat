@@ -1,0 +1,12 @@
+release/connectiondialog.o
+release/controller.o
+release/databasecontroller.o
+release/datatransfercontroller.o
+release/main.o
+release/mainwindow.o
+release/server.o
+release/moc_connectiondialog.o
+release/moc_controller.o
+release/moc_databasecontroller.o
+release/moc_datatransfercontroller.o
+release/moc_mainwindow.o
