@@ -16,13 +16,15 @@ public:
 
     void openCompetition(QString);
     void changeConnection(void);
+    void addCategory(QString);
 
 private:
     DataBaseController* baseController;
     DataTransferController* transferController;
 
     //QList<Category*> lCategory;
-    QListWidget* lCategories;
+    QListWidget* listWidget;
+    QList<Category*> listCategories;
 
     QString currentBaseName;
 

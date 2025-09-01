@@ -5,7 +5,7 @@ Category::Category(
     int _id_base,
     int _status,
     QString _data
-    ):QGraphicsScene {}
+    ):QFrame {}
 {
 
     id = _id;

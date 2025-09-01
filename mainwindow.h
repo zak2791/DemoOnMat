@@ -3,8 +3,8 @@
 
 #include "controller.h"
 #include "qdialog.h"
-#include "server.h"
-#include "ui_dialogConnection.h"
+//#include "server.h"
+//#include "ui_dialogConnection.h"
 #include <QMainWindow>
 #include <QHttpServer>
 #include <QJsonDocument>
@@ -30,7 +30,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     QDialog formSettings;
-    Ui::dlgConnection uiDlg;
+    //Ui::dlgConnection uiDlg;
     QString settings;
 
     QListWidget* listCategories;

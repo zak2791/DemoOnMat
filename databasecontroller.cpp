@@ -48,6 +48,21 @@ QList<std::tuple<int, int, int, int, int, QString>> DataBaseController::openData
     return listData;
 }
 
+int DataBaseController::addCategory(int id_base, int id_system, int mode, QString data)
+{
+    QMessageBox msgBox;
+    QString sql("INSERT INTO categories () VALUES (?, ?, ?, ?);");
+    sql = sql.arg(QString::number(id_base), QString::number(id_system), QString::number(mode), data);
+    QSqlQuery query;
+    if(!query.exec(sql)){
+        msgBox.setText("Ошибка добавления категории " + db.lastError().text());
+        msgBox.exec();
+        db.close();
+        return -1;
+    }
+    return query.lastInsertId().toInt();
+}
+
 void DataBaseController::writeData(int, QString)
 {
 
