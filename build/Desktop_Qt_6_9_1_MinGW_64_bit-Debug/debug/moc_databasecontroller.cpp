@@ -38,10 +38,16 @@ template <> constexpr inline auto DataBaseController::qt_create_metaobjectdata<q
 {
     namespace QMC = QtMocConstants;
     QtMocHelpers::StringRefStorage qt_stringData {
-        "DataBaseController"
+        "DataBaseController",
+        "writeData",
+        ""
     };
 
     QtMocHelpers::UintData qt_methods {
+        // Slot 'writeData'
+        QtMocHelpers::SlotData<void(int, QString)>(1, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::Int, 2 }, { QMetaType::QString, 2 },
+        }}),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -63,10 +69,12 @@ Q_CONSTINIT const QMetaObject DataBaseController::staticMetaObject = { {
 void DataBaseController::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     auto *_t = static_cast<DataBaseController *>(_o);
-    (void)_t;
-    (void)_c;
-    (void)_id;
-    (void)_a;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: _t->writeData((*reinterpret_cast< std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
+        default: ;
+        }
+    }
 }
 
 const QMetaObject *DataBaseController::metaObject() const
@@ -85,6 +93,18 @@ void *DataBaseController::qt_metacast(const char *_clname)
 int DataBaseController::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QObject::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 1)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 1;
+    }
+    if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 1)
+            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
+        _id -= 1;
+    }
     return _id;
 }
 QT_WARNING_POP

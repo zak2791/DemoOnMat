@@ -1,3 +1,5 @@
+release/category.o
+release/category_0_0.o
 release/connectiondialog.o
 release/controller.o
 release/databasecontroller.o
@@ -5,6 +7,7 @@ release/datatransfercontroller.o
 release/main.o
 release/mainwindow.o
 release/server.o
+release/moc_category.o
 release/moc_connectiondialog.o
 release/moc_controller.o
 release/moc_databasecontroller.o

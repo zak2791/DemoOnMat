@@ -320,6 +320,8 @@ Makefile: ../../DemoOnMat.pro ../../../../Qt/6.9.1/mingw_64/mkspecs/win32-g++/qm
 		../../../../Qt/6.9.1/mingw_64/lib/Qt6Widgets.prl \
 		../../../../Qt/6.9.1/mingw_64/lib/Qt6Gui.prl \
 		../../../../Qt/6.9.1/mingw_64/lib/Qt6Sql.prl \
+		../../../../Qt/6.9.1/mingw_64/lib/Qt6HttpServer.prl \
+		../../../../Qt/6.9.1/mingw_64/lib/Qt6WebSockets.prl \
 		../../../../Qt/6.9.1/mingw_64/lib/Qt6Network.prl \
 		../../../../Qt/6.9.1/mingw_64/lib/Qt6Core.prl \
 		../../../../Qt/6.9.1/mingw_64/lib/Qt6EntryPoint.prl \
@@ -575,6 +577,8 @@ Makefile: ../../DemoOnMat.pro ../../../../Qt/6.9.1/mingw_64/mkspecs/win32-g++/qm
 ../../../../Qt/6.9.1/mingw_64/lib/Qt6Widgets.prl:
 ../../../../Qt/6.9.1/mingw_64/lib/Qt6Gui.prl:
 ../../../../Qt/6.9.1/mingw_64/lib/Qt6Sql.prl:
+../../../../Qt/6.9.1/mingw_64/lib/Qt6HttpServer.prl:
+../../../../Qt/6.9.1/mingw_64/lib/Qt6WebSockets.prl:
 ../../../../Qt/6.9.1/mingw_64/lib/Qt6Network.prl:
 ../../../../Qt/6.9.1/mingw_64/lib/Qt6Core.prl:
 ../../../../Qt/6.9.1/mingw_64/lib/Qt6EntryPoint.prl:

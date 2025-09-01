@@ -6,6 +6,8 @@
 #include "server.h"
 #include "ui_dialogConnection.h"
 #include <QMainWindow>
+#include <QHttpServer>
+#include <QJsonDocument>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,6 +24,9 @@ public:
     ~MainWindow();
     QListWidget* getListCategories(void){return listCategories;}
 
+public slots:
+    void httpServerSetup();
+
 private:
     Ui::MainWindow *ui;
     QDialog formSettings;
@@ -31,6 +36,9 @@ private:
     QListWidget* listCategories;
 
     Controller* controller;
+    QHttpServer *httpServer;
+    void httpServerCreate();
+    QJsonDocument getCurrentData();
 
     void fillMenuLastCompetitions(void);
 

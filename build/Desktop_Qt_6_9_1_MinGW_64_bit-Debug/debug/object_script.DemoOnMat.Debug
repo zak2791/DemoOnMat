@@ -1,3 +1,5 @@
+debug/category.o
+debug/category_0_0.o
 debug/connectiondialog.o
 debug/controller.o
 debug/databasecontroller.o
@@ -5,6 +7,7 @@ debug/datatransfercontroller.o
 debug/main.o
 debug/mainwindow.o
 debug/server.o
+debug/moc_category.o
 debug/moc_connectiondialog.o
 debug/moc_controller.o
 debug/moc_databasecontroller.o
