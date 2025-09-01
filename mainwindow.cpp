@@ -6,12 +6,19 @@
 #include <QSettings>
 #include <QDir>
 #include <QActionGroup>
+#include <QHttpServer>
+#include <QTcpServer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    QWebEngineView* view = ui->widget;
+    view->load(QUrl("127.0.0.1:7000"));
+    // view->resize(1024, 750);
+    // view->show();
 
     controller = new Controller(this);
     //server = new Server(this);
@@ -25,6 +32,28 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     fillMenuLastCompetitions();
+
+    QHttpServer* server = new QHttpServer(this);
+
+    QString http = "<html>"
+                   "<head>"
+                   "<meta charset='utf-8'>"
+                   "</head>"
+                   "<body>"
+                   "<h1>Hello!</h1>"
+                   "</body>"
+                   "</html>";
+    server->route("/", [&http] () {
+        return "hello";
+    });
+
+    auto tcpserver = new QTcpServer(this);
+
+    if (!tcpserver->listen(QHostAddress::Any, 7000) || !server->bind(tcpserver)) {
+        delete tcpserver;
+        //return -1;
+    }
+    qDebug() << "Listening on port" << tcpserver->serverPort();
 }
 
 MainWindow::~MainWindow()

@@ -1,7 +1,7 @@
 #ifndef CATEGORY_H
 #define CATEGORY_H
 
-#include <QGraphicsScene>
+#include <QFrame>
 
 ///////////////////////////////////////////////////
 /// \brief The Category class
@@ -17,7 +17,7 @@
 /// 1 - отработан   ???????????????
 /// 2 - отправлен секретарю
 //////////////////////////////////////////////////
-class Category : public QGraphicsScene
+class Category : public QFrame
 {
     Q_OBJECT
 public:

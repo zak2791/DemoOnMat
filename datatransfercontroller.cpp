@@ -14,5 +14,5 @@ void DataTransferController::changeConnection()
 
 bool DataTransferController::sendData(int _id, QString _data)
 {
-
+    return true;
 }

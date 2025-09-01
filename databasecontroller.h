@@ -17,10 +17,16 @@ public:
                     int,    // id базовой категории (с компьютера секретаря)
                     int,    // id_system
                     int,    // mode system
-                    int,    //status
-                    QString
+                    int,    // status
+                    QString // data
                     >> openDataBase(QString);
 
+    int addCategory(
+                    int,    // id базовой категории (с компьютера секретаря)
+                    int,    // id_system
+                    int,    // mode system
+                    QString //data
+                    );
 
 public slots:
     void writeData(int,                         //id категории

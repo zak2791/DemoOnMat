@@ -28,7 +28,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="widget" native="true">
+       <widget class="QWebEngineView" name="widget" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>1</horstretch>
@@ -47,7 +47,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -96,10 +96,18 @@
   </action>
   <action name="action_3">
    <property name="text">
-    <string> </string>
+    <string/>
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header>qwebengineview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
