@@ -9,18 +9,29 @@
 
 #include <QJsonObject>
 #include <QMessageBox>
-#include <QWebEngineView>
 
 #include <QTcpServer>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
+    , httpServer(nullptr)
 {
     ui->setupUi(this);
 
-    QWebEngineView* view = ui->widget;
-    view->load(QUrl("127.0.0.1:7000"));
+    view = ui->widget;
+    view->load(QUrl("http://127.0.0.1:8080"));
+    //view->load(QUrl("https://yandex.ru/search/?text=qwebengineview+yt+dblbn+kjrfkmysq+cthdth&clid=2064708&search_source=dzen_desktop_safe&lr=191"));
+
+    // QTimer* tmr = new QTimer(this);
+    // connect(tmr, &QTimer::timeout, this, [this](){
+    //     view->reload();
+    //     view->url();
+    //     qDebug()<<"load"<<view->url();
+    // });
+    // tmr->start(3000);
+
+
     // view->resize(1024, 750);
     // view->show();
 
@@ -77,7 +88,7 @@ void MainWindow::httpServerSetup()
     // posRedInfo = settings->value("positionRed", "right").toString() == "right" ? 0 : 1;
     // settings->endGroup();
     bool enabledWebServer = true;
-    int portWebServer = 7000;
+    int portWebServer = 8080;
     if(!enabledWebServer){
         delete httpServer;
         httpServer = nullptr;

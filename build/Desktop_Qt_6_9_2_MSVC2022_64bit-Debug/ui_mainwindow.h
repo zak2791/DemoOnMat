@@ -19,6 +19,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -35,7 +36,9 @@ public:
     QHBoxLayout *horizontalLayout_2;
     QHBoxLayout *hLayout;
     QListWidget *listWidget;
+    QVBoxLayout *verticalLayout;
     QWebEngineView *widget;
+    QWidget *widget_2;
     QMenuBar *menubar;
     QMenu *menu;
     QMenu *mOpenLast;
@@ -63,6 +66,7 @@ public:
         horizontalLayout_2->setObjectName("horizontalLayout_2");
         hLayout = new QHBoxLayout();
         hLayout->setObjectName("hLayout");
+        hLayout->setSizeConstraint(QLayout::SizeConstraint::SetDefaultConstraint);
         listWidget = new QListWidget(centralwidget);
         listWidget->setObjectName("listWidget");
         QSizePolicy sizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding);
@@ -73,16 +77,26 @@ public:
 
         hLayout->addWidget(listWidget);
 
+        verticalLayout = new QVBoxLayout();
+        verticalLayout->setObjectName("verticalLayout");
+        verticalLayout->setSizeConstraint(QLayout::SizeConstraint::SetDefaultConstraint);
         widget = new QWebEngineView(centralwidget);
         widget->setObjectName("widget");
-        QSizePolicy sizePolicy1(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Preferred);
-        sizePolicy1.setHorizontalStretch(1);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
-        widget->setSizePolicy(sizePolicy1);
 
-        hLayout->addWidget(widget);
+        verticalLayout->addWidget(widget);
 
+        widget_2 = new QWidget(centralwidget);
+        widget_2->setObjectName("widget_2");
+
+        verticalLayout->addWidget(widget_2);
+
+        verticalLayout->setStretch(0, 2);
+        verticalLayout->setStretch(1, 2);
+
+        hLayout->addLayout(verticalLayout);
+
+        hLayout->setStretch(0, 1);
+        hLayout->setStretch(1, 1);
 
         horizontalLayout_2->addLayout(hLayout);
 

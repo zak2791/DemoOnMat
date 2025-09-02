@@ -3,6 +3,7 @@
 
 #include "controller.h"
 #include "qdialog.h"
+#include "qwebengineview.h"
 //#include "server.h"
 //#include "ui_dialogConnection.h"
 #include <QMainWindow>
@@ -41,6 +42,8 @@ private:
     QJsonDocument getCurrentData();
 
     void fillMenuLastCompetitions(void);
+
+    QWebEngineView* view;
 
 };
 #endif // MAINWINDOW_H
