@@ -3,7 +3,7 @@
 
 #include "controller.h"
 #include "qdialog.h"
-#include "qwebengineview.h"
+//#include "qwebengineview.h"
 //#include "server.h"
 //#include "ui_dialogConnection.h"
 #include <QMainWindow>
@@ -43,7 +43,7 @@ private:
 
     void fillMenuLastCompetitions(void);
 
-    QWebEngineView* view;
+    //QWebEngineView* view;
 
 };
 #endif // MAINWINDOW_H

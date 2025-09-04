@@ -1,5 +1,5 @@
 
-QT       += core gui sql webenginewidgets httpserver widgets quickwidgets
+QT       += core gui sql httpserver widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += network
 

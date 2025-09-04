@@ -19,8 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    view = ui->widget;
-    view->load(QUrl("http://127.0.0.1:8080"));
+    // view = ui->widget;
+    // view->load(QUrl("http://127.0.0.1:8080"));
     //view->load(QUrl("https://yandex.ru/search/?text=qwebengineview+yt+dblbn+kjrfkmysq+cthdth&clid=2064708&search_source=dzen_desktop_safe&lr=191"));
 
     // QTimer* tmr = new QTimer(this);
@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     fillMenuLastCompetitions();
 
-    httpServerSetup();
+    //httpServerSetup();
 
 
     // QHttpServer* server = new QHttpServer(this);
