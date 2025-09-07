@@ -1,6 +1,8 @@
 #ifndef CATEGORY_H
 #define CATEGORY_H
 
+#include "qboxlayout.h"
+#include "qlabel.h"
 #include <QFrame>
 
 ///////////////////////////////////////////////////
@@ -24,19 +26,30 @@ public:
     Category(int,       // id категории
              int,       // id базовой категории (с коьпьютера секретаря)
              int,       // 0 - статус
-             QString    // данные (спортсмены, оценки ...)
-             );
+             QString,   // категория
+             QString,   // возраст
+             QString,   // вес
+             QString,   // данные (спортсмены, оценки ...)
+             QWidget* parent = nullptr);
 
     void setRates(QString);
+    int getBaseCategory(void){return id_base;}
+
+private:
+    QLabel lblCategory;
+    QLabel lblAge;
+    QLabel lblWeight;
+    QString category;
+    QString age;
+    QString weight;
 
 protected:
     int id;
     int id_system;      // id системы проведения
     int id_base;
     int status;
-    QString category;
-    QString age;
-    QString weight;
+    QVBoxLayout* layout;
+    QHBoxLayout* hbFirstRow;
     QString data;
 
 signals:

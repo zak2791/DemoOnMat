@@ -9,7 +9,7 @@ class DataTransferController : public QObject
 {
     Q_OBJECT
 public:
-    explicit DataTransferController(QObject *parent = nullptr);
+    explicit DataTransferController(QString*, QObject *parent = nullptr);
 
     void changeConnection(void);
 
@@ -26,6 +26,9 @@ private:
     QUdpSocket* udpSocket;
     QTcpServer* tcpServer;
     QTcpSocket* tcpSocket;
+    QString* dataBaseName;
+    QString controlCheckSum(QByteArray);
+    QObject* p;
 
 private slots:
     void readPendingDatagrams(void);

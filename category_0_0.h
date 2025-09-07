@@ -2,6 +2,9 @@
 #define CATEGORY_____H
 
 #include "category.h"
+#include "item_category_0_0.h"
+#include "qgraphicsview.h"
+#include "qjsonobject.h"
 
 /////////////////////////////////////////////////
 /// \brief The Category_0_0 class
@@ -14,8 +17,18 @@ public:
                 int,       // id категории
                 int,       // id базовой категории (с коьпьютера секретаря)
                 int,       // 0 - статус
+                QString,
+                QString,
+                QString,
                 QString    // данные (спортсмены, оценки ...)
                 );
+
+private:
+    QGraphicsView v;
+    QGraphicsScene s;
+    Item_category_0_0* item;
+    QJsonObject jObj;
+
 };
 
 #endif // CATEGORY_____H

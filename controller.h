@@ -11,12 +11,12 @@ class Controller : public QObject
 {
     Q_OBJECT
 public:
-    explicit Controller(QObject *parent = nullptr);
+    explicit Controller(QListWidget*, QObject *parent = nullptr);
     ~Controller();
 
     void openCompetition(QString);
     void changeConnection(void);
-    void addCategory(QString);
+    bool addCategory(QString);
 
 private:
     DataBaseController* baseController;

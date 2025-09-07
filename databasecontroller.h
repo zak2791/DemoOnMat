@@ -13,23 +13,29 @@ public:
     ~DataBaseController();
 
     QList<std::tuple<
-                    int,    // id
-                    int,    // id базовой категории (с компьютера секретаря)
-                    int,    // id_system
-                    int,    // mode system
-                    int,    // status
-                    QString // data
-                    >> openDataBase(QString);
+                    int,        // id
+                    int,        // id базовой категории (с компьютера секретаря)
+                    int,        // id_system
+                    int,        // mode system
+                    int,        // status
+                    QString,    // категория
+                    QString,    // возраст
+                    QString,    // вес
+                    QString     // data
+                    >> readCategories(QString);
 
     int addCategory(
-                    int,    // id базовой категории (с компьютера секретаря)
-                    int,    // id_system
-                    int,    // mode system
-                    QString //data
+                    int,        // id базовой категории (с компьютера секретаря)
+                    int,        // id_system
+                    int,        // mode system
+                    QString,    //category
+                    QString,    //age
+                    QString,    //weight
+                    QString     //data
                     );
 
 public slots:
-    void writeData(int,                         //id категории
+    bool writeData(int,                         //id категории
                    QString                      //данные
                    );
 

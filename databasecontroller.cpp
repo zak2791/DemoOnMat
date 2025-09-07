@@ -18,14 +18,17 @@ DataBaseController::~DataBaseController()
     delete query;
 }
 
-QList<std::tuple<int, int, int, int, int, QString>> DataBaseController::openDataBase(QString name)
+QList<std::tuple<int, int, int, int, int, QString, QString, QString, QString>> DataBaseController::readCategories(QString name)
 {
     if(db.open())
         db.close();
     db.setDatabaseName(name);
-    QList<std::tuple<int, int, int, int, int, QString>> listData;
+    QList<std::tuple<int, int, int, int, int, QString, QString, QString, QString>> listData;
     if(!db.open())
         return listData;
+
+    qDebug()<<"db open";
+    //if (!db.tables().contains(QLatin1String("categories"))) return listData;
 
     QMessageBox msgBox;
     QString sqlCategories("SELECT * FROM categories;");
@@ -42,28 +45,44 @@ QList<std::tuple<int, int, int, int, int, QString>> DataBaseController::openData
         int id_system = query.value("id_system").toInt();
         int mode = query.value("mode").toInt();
         int status = query.value("status").toInt();
+        QString category = query.value("category").toString();
+        QString age = query.value("age").toString();
+        QString weight = query.value("weight").toString();
         QString data = query.value("data").toString();
-        listData.append(std::tuple(id, id_category, id_system, mode, status,  data));
+        listData.append(std::tuple(id, id_category, id_system, mode, status, category, age, weight, data));
     }
     return listData;
 }
 
-int DataBaseController::addCategory(int id_base, int id_system, int mode, QString data)
+int DataBaseController::addCategory(int id_base,
+                                    int id_system,
+                                    int mode,
+                                    QString category,
+                                    QString age,
+                                    QString weight,
+                                    QString data)
 {
     QMessageBox msgBox;
-    QString sql("INSERT INTO categories () VALUES (?, ?, ?, ?);");
-    sql = sql.arg(QString::number(id_base), QString::number(id_system), QString::number(mode), data);
-    QSqlQuery query;
-    if(!query.exec(sql)){
-        msgBox.setText("Ошибка добавления категории " + db.lastError().text());
+    QString sql("INSERT INTO categories (id_category, id_system, mode, status, category, age, weight, data) VALUES (%1, %2, %3, %4, %5, %6, %7, %8);");
+    sql = sql.arg(QString::number(id_base))
+             .arg(QString::number(id_system))
+             .arg(QString::number(mode))
+             .arg(QString::number(0))
+             .arg("'" + category + "'")
+             .arg("'" + age + "'")
+             .arg("'" + weight + "'")
+             .arg("'" + data + "'");
+    qDebug()<<"sql = "<<sql;
+    if(!query->exec(sql)){
+        msgBox.setText("Ошибка добавления категории 2" + db.lastError().text());
         msgBox.exec();
-        db.close();
+        qDebug()<<db.lastError().text();
         return -1;
     }
-    return query.lastInsertId().toInt();
+    return query->lastInsertId().toInt();
 }
 
-void DataBaseController::writeData(int, QString)
+bool DataBaseController::writeData(int, QString)
 {
 
 }

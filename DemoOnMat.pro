@@ -16,6 +16,7 @@ SOURCES += \
     controller.cpp \
     databasecontroller.cpp \
     datatransfercontroller.cpp \
+    item_category_0_0.cpp \
     main.cpp \
     mainwindow.cpp \
     server.cpp
@@ -27,6 +28,7 @@ HEADERS += \
     controller.h \
     databasecontroller.h \
     datatransfercontroller.h \
+    item_category_0_0.h \
     mainwindow.h \
     server.h
 

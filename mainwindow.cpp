@@ -34,8 +34,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // view->resize(1024, 750);
     // view->show();
-
-    controller = new Controller(this);
+    listCategories = ui->listWidget;
+    controller = new Controller(listCategories, this);
     //server = new Server(this);
     listCategories = ui->listWidget;
 
