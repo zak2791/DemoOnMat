@@ -49,6 +49,11 @@ Category_0_0::Category_0_0(int _id,
 
 }
 
+void Category_0_0::focusOutEvent(QFocusEvent *)
+{
+
+}
+
 void Category_0_0::mousePressEvent(QMouseEvent*)
 {
     qDebug()<<"press";

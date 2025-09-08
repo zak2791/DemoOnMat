@@ -10,6 +10,7 @@ class Item_category_0_0 : public QGraphicsObject
 public:
     Item_category_0_0(QJsonObject);
     int getHeight(void);
+    void clearWorkFlags(void){workFlags.fill(false);}
 
 private:
     QRectF boundingRect(void) const ;
