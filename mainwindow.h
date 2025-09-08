@@ -24,6 +24,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     QListWidget* getListCategories(void){return listCategories;}
+    void setCategoryScene(QGraphicsScene*);
 
 public slots:
     void httpServerSetup();

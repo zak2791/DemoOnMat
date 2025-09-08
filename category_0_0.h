@@ -6,6 +6,8 @@
 #include "qgraphicsview.h"
 #include "qjsonobject.h"
 
+#include <QMouseEvent>
+
 /////////////////////////////////////////////////
 /// \brief The Category_0_0 class
 ///Класс представления системы проведения соревнований System_0, общий круг
@@ -28,6 +30,9 @@ private:
     QGraphicsScene s;
     Item_category_0_0* item;
     QJsonObject jObj;
+
+    void mousePressEvent(QMouseEvent*);
+
 
 };
 

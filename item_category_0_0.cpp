@@ -4,6 +4,7 @@
 #include "qjsonobject.h"
 #include "qpainter.h"
 #include  <QJsonArray>
+#include  <QGraphicsSceneMouseEvent>
 
 Item_category_0_0::Item_category_0_0(QJsonObject obj) {
 
@@ -13,6 +14,7 @@ Item_category_0_0::Item_category_0_0(QJsonObject obj) {
     arrTeam = jObj.value("Team").toArray();
     arrRange= jObj.value("Range").toArray();
     arrCount = arrId.count();
+    setAcceptHoverEvents(true);
 
     for(int i = 0; i < arrCount; i++){
         lRectDraw.append(QRect(  0, i * 40, 40, 40));
@@ -21,7 +23,17 @@ Item_category_0_0::Item_category_0_0(QJsonObject obj) {
         lRectTeam.append(QRect(140, i * 40, 100, 40));
         lRectTeamT.append(QRect(140 + offsetText, i * 40, 100 - offsetText, 40));
         lRectRange.append(QRect(240, i * 40, 40, 40));
-
+        lRectRate1.append(QRect(280, i * 40, 40, 40));
+        lRectRate2.append(QRect(320, i * 40, 40, 40));
+        lRectRate3.append(QRect(360, i * 40, 40, 40));
+        lRectRate4.append(QRect(400, i * 40, 40, 40));
+        lRectRate5.append(QRect(440, i * 40, 40, 40));
+        lRectRateSum.append(QRect(480, i * 40, 40, 40));
+        lRectAddRate.append(QRect(520, i * 40, 40, 40));
+        lRectPlace.append(QRect(560, i * 40, 40, 40));
+        lRectHover.append(QRect(0, i * 40, 600, 40));
+        hoverFlags.append(false);
+        workFlags.append(false);
         // lRectRate.append(QRect(280, i * 40, 40, 40));
         // lRectAddRate.append(QRect(320, i * 40, 40, 40));
         // lRectPlace.append(QRect(360, i * 40, 40, 40));
@@ -39,7 +51,7 @@ QRectF Item_category_0_0::boundingRect() const
 {
     qreal penWidth = 1;
     return QRectF(penWidth / 2 - 10, penWidth / 2 - 10 - 40,
-                  600 + penWidth + 20, 40 * 1 + penWidth + 10 + 40);
+                  600 + penWidth + 20, 40 * 1 + penWidth + 10 + 40 * arrCount);
 }
 
 void Item_category_0_0::paint(QPainter *painter,
@@ -89,6 +101,14 @@ void Item_category_0_0::paint(QPainter *painter,
 
 
     for(int i = 0; i < arrCount; i++){
+        if(workFlags.at(i))
+            painter->fillRect(lRectHover.at(i), "red");
+        // else if(workFlags.at(i) == 1)
+        //     painter->fillRect(lRectHover.at(i), "yellow");
+        else
+            if(hoverFlags.at(i))
+                painter->fillRect(lRectHover.at(i), "lightgray");
+
         painter->drawRect(lRectDraw.at(i));
         painter->drawText(lRectDraw.at(i), Qt::AlignVCenter | Qt::AlignHCenter, QString::number(i + 1));
         painter->drawRect(lRectName.at(i));
@@ -97,6 +117,15 @@ void Item_category_0_0::paint(QPainter *painter,
         painter->drawText(lRectTeamT.at(i), Qt::AlignVCenter | Qt::AlignLeft, arrTeam.at(i).toString());
         painter->drawRect(lRectRange.at(i));
         painter->drawText(lRectRange.at(i), Qt::AlignVCenter | Qt::AlignHCenter, arrRange.at(i).toString());
+        painter->drawRect(lRectRate1.at(i));
+        painter->drawRect(lRectRate2.at(i));
+        painter->drawRect(lRectRate3.at(i));
+        painter->drawRect(lRectRate4.at(i));
+        painter->drawRect(lRectRate5.at(i));
+        painter->drawRect(lRectRateSum.at(i));
+        painter->drawRect(lRectAddRate.at(i));
+        painter->drawRect(lRectPlace.at(i));
+
 
 
         //painter->drawRect(lRectRate.at(i));
@@ -128,4 +157,33 @@ void Item_category_0_0::paint(QPainter *painter,
         // }
 
     }
+}
+
+void Item_category_0_0::mousePressEvent(QGraphicsSceneMouseEvent * e)
+{
+    int x = e->pos().x();
+    int y = e->pos().y();
+
+    for(int i = 0; i < lRectHover.count(); i++){
+        workFlags[i] = 0;
+        if(lRectHover.at(i).contains(x, y)){
+            workFlags[i] = 1;
+        }
+    }
+
+    update();
+}
+
+void Item_category_0_0::hoverMoveEvent(QGraphicsSceneHoverEvent * e)
+{
+    int x = e->pos().x();
+    int y = e->pos().y();
+    for(int i = 0; i < lRectHover.count(); i++){
+        hoverFlags[i] = false;
+        if(lRectHover.at(i).contains(x, y)){
+            hoverFlags[i] = true;
+        }
+    }
+
+    update();
 }

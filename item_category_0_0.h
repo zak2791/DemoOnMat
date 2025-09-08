@@ -14,6 +14,8 @@ public:
 private:
     QRectF boundingRect(void) const ;
     void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*) ;
+    void hoverMoveEvent(QGraphicsSceneHoverEvent*);
+    void mousePressEvent(QGraphicsSceneMouseEvent*);
 
     QJsonArray arrId;
     QJsonArray arrName;
@@ -36,6 +38,11 @@ private:
     QList<QRect> lRectRateSum;
     QList<QRect> lRectAddRate;
     QList<QRect> lRectPlace;
+    QList<QRect> lRectHover;
+    QList<bool> hoverFlags;
+    QList<bool> workFlags;
+
+
 
 };
 

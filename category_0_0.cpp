@@ -37,13 +37,20 @@ Category_0_0::Category_0_0(int _id,
     // s.addText("Итог");
     // s.addText("Доп. оценка");
     // s.addText("Место");
-    v.setScene(&s);
+    //v.setScene(&s);
     //v.setMinimumHeight(item->getHeight());
     //v.set
-    layout->addWidget(&v);
+
+    //layout->addWidget(&v);
 
     //setGeometry(0, 0, s.width(), 700);
 
     //setMinimumHeight(400);
 
+}
+
+void Category_0_0::mousePressEvent(QMouseEvent*)
+{
+    qDebug()<<"press";
+    emit sigScene(&s);
 }

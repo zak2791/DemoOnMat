@@ -2,6 +2,7 @@
 #define CATEGORY_H
 
 #include "qboxlayout.h"
+#include "qgraphicsscene.h"
 #include "qlabel.h"
 #include <QFrame>
 
@@ -60,6 +61,8 @@ signals:
     void sigSendData(int,       //id
                      QString    //data
                      );
+
+    void sigScene(QGraphicsScene*);
 
 
 };

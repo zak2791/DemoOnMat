@@ -18,9 +18,13 @@ public:
     void changeConnection(void);
     bool addCategory(QString);
 
+public slots:
+    void setCategoryScene(QGraphicsScene*);
+
 private:
     DataBaseController* baseController;
     DataTransferController* transferController;
+    QObject* p;
 
     //QList<Category*> lCategory;
     QListWidget* listWidget;

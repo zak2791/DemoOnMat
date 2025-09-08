@@ -11,6 +11,7 @@ Controller::Controller(QListWidget* list, QObject *parent)
     currentBaseName = "";
     transferController = new DataTransferController(&currentBaseName, this);
     listWidget = list;
+    p = parent;
 }
 
 Controller::~Controller()
@@ -45,6 +46,7 @@ void Controller::openCompetition(QString name)
         if(id_system == 0){
             if(mode == 0){
                 Category* cat = new Category_0_0(id, id_category, status, category, age, weight, data);
+                connect(cat, &Category::sigScene, this, &Controller::setCategoryScene);
                 //connect(cat, &Category::sigSendData, transferController, &DataTransferController::sendOnMat);
                 listCategories.append(cat);
                 QListWidgetItem* item  = new QListWidgetItem();
@@ -90,4 +92,9 @@ bool Controller::addCategory(QString _data)
         }
     }
     return true;
+}
+
+void Controller::setCategoryScene(QGraphicsScene * scene)
+{
+    static_cast<MainWindow*>(p)->setCategoryScene(scene);
 }

@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include "connectiondialog.h"
+#include "controlpanel_0_0.h"
 #include "ui_mainwindow.h"
 
 #include <QSettings>
@@ -31,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     // });
     // tmr->start(3000);
 
-
+    ui->verticalLayout->addWidget(new ControlPanel_0_0);
     // view->resize(1024, 750);
     // view->show();
     listCategories = ui->listWidget;
@@ -78,6 +79,11 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setCategoryScene(QGraphicsScene *scene)
+{
+    ui->graphicsView->setScene(scene);
 }
 
 void MainWindow::httpServerSetup()

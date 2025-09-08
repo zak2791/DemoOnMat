@@ -14,6 +14,7 @@ SOURCES += \
     category_0_0.cpp \
     connectiondialog.cpp \
     controller.cpp \
+    controlpanel_0_0.cpp \
     databasecontroller.cpp \
     datatransfercontroller.cpp \
     item_category_0_0.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     category_0_0.h \
     connectiondialog.h \
     controller.h \
+    controlpanel_0_0.h \
     databasecontroller.h \
     datatransfercontroller.h \
     item_category_0_0.h \
@@ -34,6 +36,7 @@ HEADERS += \
 
 FORMS += \
     connectiondialog.ui \
+    controlpanel_0_0.ui \
     mainwindow.ui
 
 # Default rules for deployment.
