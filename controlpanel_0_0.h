@@ -27,11 +27,11 @@ private:
     int currentTask;
     double totalRate;
     double currentTaskRate;
-    double currentTaskRef1Rate;
-    double currentTaskRef2Rate;
-    double currentTaskRef3Rate;
-    double currentTaskRef4Rate;
-    double currentTaskRef5Rate;
+    // double currentTaskRef1Rate;
+    // double currentTaskRef2Rate;
+    // double currentTaskRef3Rate;
+    // double currentTaskRef4Rate;
+    // double currentTaskRef5Rate;
     QList<double> lCurrentTaskRate;
     QList<QLineEdit*> leRates;
     QList<QPushButton*> btnErrors;
@@ -48,6 +48,7 @@ private:
 
 private slots:
     void slotButtonsError(bool);
+    void slotEditRate(void);
 
 
 

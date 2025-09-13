@@ -71,7 +71,7 @@ class Item_category_0_0 : public QGraphicsObject
 {
     Q_OBJECT
 public:
-    Item_category_0_0(QJsonArray);
+    Item_category_0_0(QJsonArray*);
     int getHeight(void);
     void clearWorkFlags(void){workFlags.fill(false);}
 
@@ -81,7 +81,7 @@ private:
     void hoverMoveEvent(QGraphicsSceneHoverEvent*);
     void mousePressEvent(QGraphicsSceneMouseEvent*);
 
-    QJsonArray jArr;
+    QJsonArray* jArr;
 
     // QJsonArray arrId;
     // QJsonArray arrName;

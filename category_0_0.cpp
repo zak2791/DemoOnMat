@@ -38,7 +38,7 @@ Category_0_0::Category_0_0(int _id,
     //     }
 
     // }
-    item = new Item_category_0_0(jArr);
+    item = new Item_category_0_0(&jArr);
     connect(item, &Item_category_0_0::sigSendToControlPanel, this, [this](QJsonObject o){
         emit sigDataControlPanel(id, id_system, o);
     });
@@ -78,7 +78,10 @@ void Category_0_0::setDataFromControlPanel(QJsonObject obj)
         QJsonObject o = jArr.at(i).toObject();
         if(o.value("Id").toInt() == id_athlete){
             jArr.removeAt(i);
-            jArr.append(obj);
+            jArr.insert(i, obj);
+            //update();
+            item->update();
+            qDebug()<<"update";
             continue;
         }
     }
