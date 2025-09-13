@@ -27,7 +27,7 @@ QList<std::tuple<int, int, int, int, int, QString, QString, QString, QString>> D
     if(!db.open())
         return listData;
 
-    qDebug()<<"db open";
+    //qDebug()<<"db open";
     //if (!db.tables().contains(QLatin1String("categories"))) return listData;
 
     QMessageBox msgBox;
@@ -72,7 +72,7 @@ int DataBaseController::addCategory(int id_base,
              .arg("'" + age + "'")
              .arg("'" + weight + "'")
              .arg("'" + data + "'");
-    qDebug()<<"sql = "<<sql;
+    //qDebug()<<"sql = "<<sql;
     if(!query->exec(sql)){
         msgBox.setText("Ошибка добавления категории 2" + db.lastError().text());
         msgBox.exec();
@@ -82,7 +82,8 @@ int DataBaseController::addCategory(int id_base,
     return query->lastInsertId().toInt();
 }
 
-bool DataBaseController::writeData(int, QString)
+bool DataBaseController::writeData(int id, QString strJson)
 {
-
+    qDebug()<<id<<strJson;
+    return true;
 }

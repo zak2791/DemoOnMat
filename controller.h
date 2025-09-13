@@ -2,6 +2,7 @@
 #define CONTROLLER_H
 
 #include "category.h"
+#include "controlpanel.h"
 #include "databasecontroller.h"
 #include "datatransfercontroller.h"
 #include "qlistwidget.h"
@@ -21,6 +22,7 @@ public:
 public slots:
     void setCategoryScene(QGraphicsScene*);
 
+
 private:
     DataBaseController* baseController;
     DataTransferController* transferController;
@@ -31,9 +33,13 @@ private:
     QList<Category*> listCategories;
 
     QString currentBaseName;
+    ControlPanel* panel = nullptr;
 
+private slots:
+    void slotDataControlPanel(int, int, QJsonObject);
+    void slotFixResult(int, QJsonObject);
+    void slotSaveData(int, QString);
 
-signals:
 };
 
 #endif // CONTROLLER_H

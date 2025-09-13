@@ -5,6 +5,7 @@
 #include "qgraphicsscene.h"
 #include "qlabel.h"
 #include <QFrame>
+#include <QJsonObject>
 
 ///////////////////////////////////////////////////
 /// \brief The Category class
@@ -34,7 +35,10 @@ public:
              QWidget* parent = nullptr);
 
     void setRates(QString);
+    virtual void setDataFromControlPanel(QJsonObject);
     int getBaseCategory(void){return id_base;}
+    //int getIdSystem(void){return id_system;}
+    int getId(void){return id;}
 
 private:
     QLabel lblCategory;
@@ -58,11 +62,23 @@ signals:
     /// \brief sigSendData
     /// отправка данных на компьютер секретаря
     /////////////////////////////////////////////////
-    void sigSendData(int,       //id
-                     QString    //data
-                     );
+    void sigDataControlPanel(
+                             int,           //id
+                             int,           //id_system
+                             QJsonObject    //data
+                             );
+    void sigDataTransfer(int,       //id_base
+                         QString    //data
+                         );
 
     void sigScene(QGraphicsScene*);
+
+    //////////////////////////////////////////////////////
+    /// Сохранение данных в базе
+    //////////////////////////////////////////////////////
+    void sigSaveData(int,       //id категории
+                     QString    //строка с json ланными
+                     );
 
 
 };

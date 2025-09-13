@@ -3,11 +3,10 @@
 
 #include "controller.h"
 #include "qdialog.h"
-//#include "qwebengineview.h"
-//#include "server.h"
-//#include "ui_dialogConnection.h"
+
+
 #include <QMainWindow>
-#include <QHttpServer>
+
 #include <QJsonDocument>
 
 QT_BEGIN_NAMESPACE
@@ -25,26 +24,27 @@ public:
     ~MainWindow();
     QListWidget* getListCategories(void){return listCategories;}
     void setCategoryScene(QGraphicsScene*);
+    void setControlPanel(QWidget*);
+    void removeControlPanel(QWidget*);
 
-public slots:
-    void httpServerSetup();
+
 
 private:
     Ui::MainWindow *ui;
     QDialog formSettings;
-    //Ui::dlgConnection uiDlg;
+
     QString settings;
 
     QListWidget* listCategories;
 
     Controller* controller;
-    QHttpServer *httpServer;
-    void httpServerCreate();
+
+
     QJsonDocument getCurrentData();
 
     void fillMenuLastCompetitions(void);
 
-    //QWebEngineView* view;
+
 
 };
 #endif // MAINWINDOW_H

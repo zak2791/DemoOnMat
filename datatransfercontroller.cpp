@@ -49,6 +49,7 @@ void DataTransferController::readyRead()
         tcpSocket->write("Err");
         return;
     }
+    //qDebug()<<data;
     if((static_cast<Controller*>(p))->addCategory(data))
         tcpSocket->write("Ok");
     else

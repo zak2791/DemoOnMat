@@ -47,3 +47,8 @@ Category::Category(
     layout->addLayout(hbFirstRow);
     setLayout(layout);
 }
+
+void Category::setDataFromControlPanel(QJsonObject)
+{
+
+}

@@ -1,5 +1,6 @@
 #include "controller.h"
 #include "category_0_0.h"
+#include "controlpanel_0_0.h"
 #include "mainwindow.h"
 #include "qdebug.h"
 #include "qjsonobject.h"
@@ -47,6 +48,8 @@ void Controller::openCompetition(QString name)
             if(mode == 0){
                 Category* cat = new Category_0_0(id, id_category, status, category, age, weight, data);
                 connect(cat, &Category::sigScene, this, &Controller::setCategoryScene);
+                connect(cat, &Category::sigDataControlPanel, this, &Controller::slotDataControlPanel);
+                connect(cat, &Category::sigSaveData, this, &Controller::slotSaveData);
                 //connect(cat, &Category::sigSendData, transferController, &DataTransferController::sendOnMat);
                 listCategories.append(cat);
                 QListWidgetItem* item  = new QListWidgetItem();
@@ -56,7 +59,6 @@ void Controller::openCompetition(QString name)
                 listWidget->setItemWidget(item, cat);
             }
         }
-        //listData.append(std::tuple(id, category, age, weight));
     }
 }
 
@@ -78,9 +80,74 @@ bool Controller::addCategory(QString _data)
     QString category =  obj.value("Category").toString();
     QString age =  obj.value("Age").toString();
     QString weight =  obj.value("Weight").toString();
-    QJsonObject data = obj.value("Data").toObject();
-    doc.setObject(data);
-    QString strJson(doc.toJson(QJsonDocument::Compact));
+    QJsonArray data = obj.value("Data").toArray();
+
+    QJsonArray mainArray;
+    for(int i = 0; i < data.size(); i++){
+        QJsonObject o = data.at(i).toObject();
+        o.insert("CurrentTask", 0);
+        o.insert("TotalRate", 0.0);
+        o.insert("Task1Rate", 0.0);
+        o.insert("Task2Rate", 0.0);
+        o.insert("Task3Rate", 0.0);
+        o.insert("Task4Rate", 0.0);
+        o.insert("Task5Rate", 0.0);
+        o.insert("Task1Ref1Rate", 0.0);
+        o.insert("Task1Ref2Rate", 0.0);
+        o.insert("Task1Ref3Rate", 0.0);
+        o.insert("Task1Ref4Rate", 0.0);
+        o.insert("Task1Ref5Rate", 0.0);
+        o.insert("Task2Ref1Rate", 0.0);
+        o.insert("Task2Ref2Rate", 0.0);
+        o.insert("Task2Ref3Rate", 0.0);
+        o.insert("Task2Ref4Rate", 0.0);
+        o.insert("Task2Ref5Rate", 0.0);
+        o.insert("Task3Ref1Rate", 0.0);
+        o.insert("Task3Ref2Rate", 0.0);
+        o.insert("Task3Ref3Rate", 0.0);
+        o.insert("Task3Ref4Rate", 0.0);
+        o.insert("Task3Ref5Rate", 0.0);
+        o.insert("Task4Ref1Rate", 0.0);
+        o.insert("Task4Ref2Rate", 0.0);
+        o.insert("Task4Ref3Rate", 0.0);
+        o.insert("Task4Ref4Rate", 0.0);
+        o.insert("Task4Ref5Rate", 0.0);
+        o.insert("Task5Ref1Rate", 0.0);
+        o.insert("Task5Ref2Rate", 0.0);
+        o.insert("Task5Ref3Rate", 0.0);
+        o.insert("Task5Ref4Rate", 0.0);
+        o.insert("Task5Ref5Rate", 0.0);
+        o.insert("Task1Ref1Err", "");
+        o.insert("Task1Ref2Err", "");
+        o.insert("Task1Ref3Err", "");
+        o.insert("Task1Ref4Err", "");
+        o.insert("Task1Ref5Err", "");
+        o.insert("Task2Ref1Err", "");
+        o.insert("Task2Ref2Err", "");
+        o.insert("Task2Ref3Err", "");
+        o.insert("Task2Ref4Err", "");
+        o.insert("Task2Ref5Err", "");
+        o.insert("Task3Ref1Err", "");
+        o.insert("Task3Ref2Err", "");
+        o.insert("Task3Ref3Err", "");
+        o.insert("Task3Ref4Err", "");
+        o.insert("Task3Ref5Err", "");
+        o.insert("Task4Ref1Err", "");
+        o.insert("Task4Ref2Err", "");
+        o.insert("Task4Ref3Err", "");
+        o.insert("Task4Ref4Err", "");
+        o.insert("Task4Ref5Err", "");
+        o.insert("Task5Ref1Err", "");
+        o.insert("Task5Ref2Err", "");
+        o.insert("Task5Ref3Err", "");
+        o.insert("Task5Ref4Err", "");
+        o.insert("Task5Ref5Err", "");
+
+        mainArray.append(o);
+    }
+    QJsonDocument _doc(mainArray);
+    QString strJson(_doc.toJson(QJsonDocument::Compact));
+
     int id = baseController->addCategory(id_base, id_system, mode, category, age, weight, strJson);
     if(id == -1)
         return false;
@@ -97,4 +164,44 @@ bool Controller::addCategory(QString _data)
 void Controller::setCategoryScene(QGraphicsScene * scene)
 {
     static_cast<MainWindow*>(p)->setCategoryScene(scene);
+}
+
+void Controller::slotDataControlPanel(int _id, int _id_system, QJsonObject obj)
+{
+    if(panel != nullptr){
+        if(panel->getIdSystem() != _id_system){
+            static_cast<MainWindow*>(p)->removeControlPanel(panel);
+            delete panel;
+            if(_id_system == 0)
+                panel = new ControlPanel_0_0;
+            else
+                panel = new ControlPanel_0_0;
+            static_cast<MainWindow*>(p)->setControlPanel(panel);
+            connect(panel, &ControlPanel::sigFixResult, this, &Controller::slotFixResult);
+        }
+    }
+    else{
+        if(_id_system == 0)
+            panel = new ControlPanel_0_0;
+        else
+            panel = new ControlPanel_0_0;
+        static_cast<MainWindow*>(p)->setControlPanel(panel);
+    }
+    panel->setData(_id, obj);
+    connect(panel, &ControlPanel::sigFixResult, this, &Controller::slotFixResult);
+}
+
+void Controller::slotFixResult(int id, QJsonObject obj)
+{
+    foreach(auto each, listCategories){
+        if(id == each->getId()){
+            each->setDataFromControlPanel(obj);
+            return;
+        }
+    }
+}
+
+void Controller::slotSaveData(int id, QString strJson)
+{
+    bool ret = baseController->writeData(id, strJson);
 }

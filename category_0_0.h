@@ -4,7 +4,6 @@
 #include "category.h"
 #include "item_category_0_0.h"
 #include "qgraphicsview.h"
-#include "qjsonobject.h"
 
 #include <QMouseEvent>
 
@@ -17,7 +16,7 @@ class Category_0_0 : public Category
 public:
     Category_0_0(
                 int,       // id категории
-                int,       // id базовой категории (с коьпьютера секретаря)
+                int,       // id базовой категории (с компьютера секретаря)
                 int,       // 0 - статус
                 QString,
                 QString,
@@ -25,14 +24,23 @@ public:
                 QString    // данные (спортсмены, оценки ...)
                 );
 
+    virtual void setDataFromControlPanel(QJsonObject);
+
 private:
     QGraphicsView v;
     QGraphicsScene s;
     Item_category_0_0* item;
-    QJsonObject jObj;
+    QJsonArray jArr;
+    // QList<int> err1;    //
+    // QList<int> err2;    //
+    // QList<int> err3;    //
+    // QList<int> err4;    //
+    // QList<int> err5;    //
+    // float rate1
+
+
 
     void mousePressEvent(QMouseEvent*);
-
 
 };
 

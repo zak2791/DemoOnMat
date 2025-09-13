@@ -14,6 +14,7 @@ SOURCES += \
     category_0_0.cpp \
     connectiondialog.cpp \
     controller.cpp \
+    controlpanel.cpp \
     controlpanel_0_0.cpp \
     databasecontroller.cpp \
     datatransfercontroller.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     category_0_0.h \
     connectiondialog.h \
     controller.h \
+    controlpanel.h \
     controlpanel_0_0.h \
     databasecontroller.h \
     datatransfercontroller.h \

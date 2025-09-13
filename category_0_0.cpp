@@ -1,6 +1,7 @@
 #include "category_0_0.h"
 #include "item_category_0_0.h"
 #include "qjsondocument.h"
+#include <QJsonObject>
 
 Category_0_0::Category_0_0(int _id,
                            int _id_base,
@@ -19,8 +20,29 @@ Category_0_0::Category_0_0(int _id,
     id_system = 0;
     hbFirstRow->addWidget(new QLabel("Первый круг"));
     QJsonDocument doc = QJsonDocument::fromJson(data.toUtf8());
-    jObj = doc.object();
-    item = new Item_category_0_0(jObj);
+    jArr = doc.array();
+    //qDebug()<<"doc = "<<doc<<jObj;
+    // QJsonObject o = doc.object();
+    // if(o.contains("ObjArr"))
+    //     jObj = o;
+    // else{
+    //     QJsonArray arr;
+    //     foreach(auto each, o){
+    //         //qDebug()<<each.toArray().at(0);
+    //         QJsonArray arr(each.toArray());
+    //         QJsonObject obj;
+    //         obj.insert("Id", arr.at(0));
+    //         obj.insert("Name", arr.at(1));
+    //         obj.insert("Team", arr.at(3));
+    //         qDebug()<<obj;
+    //     }
+
+    // }
+    item = new Item_category_0_0(jArr);
+    connect(item, &Item_category_0_0::sigSendToControlPanel, this, [this](QJsonObject o){
+        emit sigDataControlPanel(id, id_system, o);
+    });
+
     s.addItem(item);
 
     // item = new Item_category_0_0(jObj);
@@ -49,13 +71,26 @@ Category_0_0::Category_0_0(int _id,
 
 }
 
-void Category_0_0::focusOutEvent(QFocusEvent *)
+void Category_0_0::setDataFromControlPanel(QJsonObject obj)
 {
+    int id_athlete = obj.value("Id").toInt();
+    for(int i = 0; i < jArr.count(); i++){
+        QJsonObject o = jArr.at(i).toObject();
+        if(o.value("Id").toInt() == id_athlete){
+            jArr.removeAt(i);
+            jArr.append(obj);
+            continue;
+        }
+    }
 
+    QJsonDocument doc(obj);
+    QString strJson = doc.toJson(QJsonDocument::Compact);
+    emit sigSaveData(id, strJson);
 }
 
 void Category_0_0::mousePressEvent(QMouseEvent*)
 {
-    qDebug()<<"press";
+    item->clearWorkFlags();
+    item->update();
     emit sigScene(&s);
 }

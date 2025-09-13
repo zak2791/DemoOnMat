@@ -6,15 +6,18 @@
 #include  <QJsonArray>
 #include  <QGraphicsSceneMouseEvent>
 
-Item_category_0_0::Item_category_0_0(QJsonObject obj) {
+Item_category_0_0::Item_category_0_0(QJsonArray arr) {
 
-    QJsonObject jObj = obj;
-    arrId = jObj.value("Id").toArray();
-    arrName = jObj.value("Name").toArray();
-    arrTeam = jObj.value("Team").toArray();
-    arrRange= jObj.value("Range").toArray();
-    arrCount = arrId.count();
+    jArr = arr;
+    //qDebug()<<"obj"<<obj;
+    // arrId = jObj.value("Id").toArray();
+    // arrName = jObj.value("Name").toArray();
+    // arrTeam = jObj.value("Team").toArray();
+    // arrRange= jObj.value("Range").toArray();
+    arrCount = jArr.count();
     setAcceptHoverEvents(true);
+
+    //qDebug()<<jArr<<jArr.count();
 
     for(int i = 0; i < arrCount; i++){
         lRectDraw.append(QRect(  0, i * 40, 40, 40));
@@ -112,11 +115,11 @@ void Item_category_0_0::paint(QPainter *painter,
         painter->drawRect(lRectDraw.at(i));
         painter->drawText(lRectDraw.at(i), Qt::AlignVCenter | Qt::AlignHCenter, QString::number(i + 1));
         painter->drawRect(lRectName.at(i));
-        painter->drawText(lRectNameT.at(i), Qt::AlignVCenter | Qt::AlignLeft, arrName.at(i).toString());
+        painter->drawText(lRectNameT.at(i), Qt::AlignVCenter | Qt::AlignLeft, jArr.at(i).toObject().value("Name").toString());
         painter->drawRect(lRectTeam.at(i));
-        painter->drawText(lRectTeamT.at(i), Qt::AlignVCenter | Qt::AlignLeft, arrTeam.at(i).toString());
+        painter->drawText(lRectTeamT.at(i), Qt::AlignVCenter | Qt::AlignLeft, jArr.at(i).toObject().value("Team").toString());
         painter->drawRect(lRectRange.at(i));
-        painter->drawText(lRectRange.at(i), Qt::AlignVCenter | Qt::AlignHCenter, arrRange.at(i).toString());
+        painter->drawText(lRectRange.at(i), Qt::AlignVCenter | Qt::AlignHCenter, jArr.at(i).toObject().value("Range").toString());
         painter->drawRect(lRectRate1.at(i));
         painter->drawRect(lRectRate2.at(i));
         painter->drawRect(lRectRate3.at(i));
@@ -125,6 +128,22 @@ void Item_category_0_0::paint(QPainter *painter,
         painter->drawRect(lRectRateSum.at(i));
         painter->drawRect(lRectAddRate.at(i));
         painter->drawRect(lRectPlace.at(i));
+
+        if(jArr.at(i).toObject().value("CurrentTask").toInt() == 0){
+            QString rate1 = QString::number(jArr.at(i).toObject().value("Task1Rate").toDouble());
+            QString rate2 = QString::number(jArr.at(i).toObject().value("Task1Rate").toDouble());
+            QString rate3 = QString::number(jArr.at(i).toObject().value("Task1Rate").toDouble());
+            QString rate4 = QString::number(jArr.at(i).toObject().value("Task1Rate").toDouble());
+            QString rate5 = QString::number(jArr.at(i).toObject().value("Task1Rate").toDouble());
+            QString total = QString::number(jArr.at(i).toObject().value("TotalRate").toDouble());
+            painter->drawText(lRectRate1.at(i),  Qt::AlignVCenter | Qt::AlignHCenter, rate1);
+            painter->drawText(lRectRate2.at(i),  Qt::AlignVCenter | Qt::AlignHCenter, rate2);
+            painter->drawText(lRectRate3.at(i),  Qt::AlignVCenter | Qt::AlignHCenter, rate3);
+            painter->drawText(lRectRate4.at(i),  Qt::AlignVCenter | Qt::AlignHCenter, rate4);
+            painter->drawText(lRectRate5.at(i),  Qt::AlignVCenter | Qt::AlignHCenter, rate5);
+            painter->drawText(lRectRateSum.at(i),  Qt::AlignVCenter | Qt::AlignHCenter, total);
+        }
+
 
 
 
@@ -168,6 +187,11 @@ void Item_category_0_0::mousePressEvent(QGraphicsSceneMouseEvent * e)
         workFlags[i] = 0;
         if(lRectHover.at(i).contains(x, y)){
             workFlags[i] = 1;
+            // QJsonObject obj;
+            // obj.insert("Name", jArr.at(i).toObject().value("Name"));
+            // obj.insert("Team", jArr.at(i).toObject().value("Team"));
+            //qDebug()<<jArr.at(i).toObject();
+            emit sigSendToControlPanel(jArr.at(i).toObject());
         }
     }
 
