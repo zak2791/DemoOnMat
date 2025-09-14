@@ -93,11 +93,9 @@ ControlPanel_0_0::~ControlPanel_0_0()
 
 void ControlPanel_0_0::setData(int id, QJsonObject _obj)
 {
-    qDebug()<<"setData";
-    id_category = id;
     obj = _obj;
-    totalRate =obj.value("Total").toDouble();
-    ui->lblTotal->setText(QString::number(totalRate));
+    totalRate =obj.value("TotalRate").toDouble();
+
     currentTaskRate = 0.0;
     ui->lblName->setText(obj.value("Name").toString());
     ui->lblTeam->setText(obj.value("Team").toString());
@@ -106,11 +104,17 @@ void ControlPanel_0_0::setData(int id, QJsonObject _obj)
     id_category = id;
     currentTask = obj.value("CurrentTask").toInt();
 
-    //ui->lblTask->setText(QString::number(currentTask));
+    ui->lblTask->clear();
+    ui->lblTotal->clear();
+    ui->lblTaskSum->clear();
 
-    if(currentTask < 5) ui->btnNext->setEnabled(true);
-    foreach(auto each, leRates)
+    if(currentTask == 5) ui->btnNext->setEnabled(false);
+    else ui->btnNext->setEnabled(true);
+
+    foreach(auto each, leRates){
         each->setStyleSheet("background-color: white");
+        each->clear();
+    }
 
     if(currentTask == 1){
         lCurrentTaskRate.append(obj.value("Task1Ref1Rate").toDouble());
@@ -132,38 +136,95 @@ void ControlPanel_0_0::setData(int id, QJsonObject _obj)
         ui->lblTaskSum->setText(QString::number(currentTaskRate));
     }
     if(currentTask == 2){
-        // currentTaskRef1Rate = obj.value("Task2Ref1Rate").toDouble();
-        // currentTaskRef2Rate = obj.value("Task2Ref2Rate").toDouble();
-        // currentTaskRef3Rate = obj.value("Task2Ref3Rate").toDouble();
-        // currentTaskRef4Rate = obj.value("Task2Ref4Rate").toDouble();
-        // currentTaskRef5Rate = obj.value("Task2Ref5Rate").toDouble();
+        lCurrentTaskRate.append(obj.value("Task2Ref1Rate").toDouble());
+        leRates.at(0)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task2Ref2Rate").toDouble());
+        leRates.at(1)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task2Ref3Rate").toDouble());
+        leRates.at(2)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task2Ref4Rate").toDouble());
+        leRates.at(3)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task2Ref5Rate").toDouble());
+        leRates.at(4)->setText(QString::number(lCurrentTaskRate.last()));
+
+        currentTaskRate = obj.value("Task2Rate").toDouble();
+        ui->lblTaskSum->setText(QString::number(currentTaskRate));
     }
     if(currentTask == 3){
-        // currentTaskRef1Rate = obj.value("Task3Ref1Rate").toDouble();
-        // currentTaskRef2Rate = obj.value("Task3Ref2Rate").toDouble();
-        // currentTaskRef3Rate = obj.value("Task3Ref3Rate").toDouble();
-        // currentTaskRef4Rate = obj.value("Task3Ref4Rate").toDouble();
-        // currentTaskRef5Rate = obj.value("Task3Ref5Rate").toDouble();
+        lCurrentTaskRate.append(obj.value("Task3Ref1Rate").toDouble());
+        leRates.at(0)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task3Ref2Rate").toDouble());
+        leRates.at(1)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task3Ref3Rate").toDouble());
+        leRates.at(2)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task3Ref4Rate").toDouble());
+        leRates.at(3)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task3Ref5Rate").toDouble());
+        leRates.at(4)->setText(QString::number(lCurrentTaskRate.last()));
+
+        currentTaskRate = obj.value("Task3Rate").toDouble();
+        ui->lblTaskSum->setText(QString::number(currentTaskRate));
     }
     if(currentTask == 4){
-        // currentTaskRef1Rate = obj.value("Task4Ref1Rate").toDouble();
-        // currentTaskRef2Rate = obj.value("Task4Ref2Rate").toDouble();
-        // currentTaskRef3Rate = obj.value("Task4Ref3Rate").toDouble();
-        // currentTaskRef4Rate = obj.value("Task4Ref4Rate").toDouble();
-        // currentTaskRef5Rate = obj.value("Task4Ref5Rate").toDouble();
+        lCurrentTaskRate.append(obj.value("Task4Ref1Rate").toDouble());
+        leRates.at(0)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task4Ref2Rate").toDouble());
+        leRates.at(1)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task4Ref3Rate").toDouble());
+        leRates.at(2)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task4Ref4Rate").toDouble());
+        leRates.at(3)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task4Ref5Rate").toDouble());
+        leRates.at(4)->setText(QString::number(lCurrentTaskRate.last()));
+
+        currentTaskRate = obj.value("Task4Rate").toDouble();
+        ui->lblTaskSum->setText(QString::number(currentTaskRate));
     }
     if(currentTask == 5){
-        // currentTaskRef1Rate = obj.value("Task5Ref1Rate").toDouble();
-        // currentTaskRef2Rate = obj.value("Task5Ref2Rate").toDouble();
-        // currentTaskRef3Rate = obj.value("Task5Ref3Rate").toDouble();
-        // currentTaskRef4Rate = obj.value("Task5Ref4Rate").toDouble();
-        // currentTaskRef5Rate = obj.value("Task5Ref5Rate").toDouble();
+        lCurrentTaskRate.append(obj.value("Task5Ref1Rate").toDouble());
+        leRates.at(0)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task5Ref2Rate").toDouble());
+        leRates.at(1)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task5Ref3Rate").toDouble());
+        leRates.at(2)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task5Ref4Rate").toDouble());
+        leRates.at(3)->setText(QString::number(lCurrentTaskRate.last()));
+
+        lCurrentTaskRate.append(obj.value("Task5Ref5Rate").toDouble());
+        leRates.at(4)->setText(QString::number(lCurrentTaskRate.last()));
+
+        currentTaskRate = obj.value("Task5Rate").toDouble();
+        ui->lblTaskSum->setText(QString::number(currentTaskRate));
     }
     if(currentTask > 0){
         ui->lblTask->setText(QString::number(currentTask));
-        //ui->le1->setText(QString::number(currentTaskRef1Rate));
+        ui->lblTotal->setText(QString::number(totalRate));
+        int min = 0;
+        int max = 4;
+        for(int i = 1; i < 5; i++){
+            if(lCurrentTaskRate.at(min) > lCurrentTaskRate.at(i)) min = i;
+            if(lCurrentTaskRate.at(max) < lCurrentTaskRate.at(4 - i)) max = 4 - i;
+        }
+        for(int i = 0; i < 5; i++){
+            if(i == min) leRates.at(i)->setStyleSheet("background-color: blue");
+            else if(i == max) leRates.at(i)->setStyleSheet("background-color: red");
+        }
     }
-
 }
 
 void ControlPanel_0_0::calculateRate1()
@@ -185,7 +246,6 @@ void ControlPanel_0_0::calculateRate1()
         }
         rate1 = rate1 < 0 ? 0 : rate1;
     }
-    qDebug()<<currentErr1;
     ui->le1->setText(QString::number(rate1));
 }
 

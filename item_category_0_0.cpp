@@ -61,11 +61,6 @@ void Item_category_0_0::paint(QPainter *painter,
                             const QStyleOptionGraphicsItem*,
                             QWidget*)
 {
-
-    // QGraphicsScene s = scene();
-    // QGraphicsView v = s.views().at(0);
-    // v.setMinimumHeight(100);
-
     QFont f = painter->font();
     QFont newFont = painter->font();
     int size = newFont.pointSize();
@@ -97,8 +92,6 @@ void Item_category_0_0::paint(QPainter *painter,
     painter->drawText(QRect(520, -40,  40, 40), Qt::AlignVCenter | Qt::AlignHCenter, "Доп.\nоценка");
     painter->drawRect(QRect(560, -40,  40, 40));
     painter->drawText(QRect(560, -40,  40, 40), Qt::AlignVCenter | Qt::AlignHCenter, "Место");
-    // painter->drawRect(rSortPlace);
-    // painter->drawText(rSortPlace, Qt::AlignVCenter | Qt::AlignHCenter, "Место");
 
     painter->setFont(f);
 
@@ -106,8 +99,6 @@ void Item_category_0_0::paint(QPainter *painter,
     for(int i = 0; i < arrCount; i++){
         if(workFlags.at(i))
             painter->fillRect(lRectHover.at(i), "red");
-        // else if(workFlags.at(i) == 1)
-        //     painter->fillRect(lRectHover.at(i), "yellow");
         else
             if(hoverFlags.at(i))
                 painter->fillRect(lRectHover.at(i), "lightgray");
@@ -152,37 +143,6 @@ void Item_category_0_0::paint(QPainter *painter,
                 painter->drawText(lRectRate5.at(i),  Qt::AlignVCenter | Qt::AlignHCenter, rate5);
             }
         }
-
-
-
-        //painter->drawRect(lRectRate.at(i));
-        //painter->drawRect(lRectAddRate.at(i));
-
-        // if(hoverPlaceFlags.at(i))
-        //     painter->fillRect(lRectPlace.at(i), "lightgray");
-        // else
-        //     painter->drawRect(lRectPlace.at(i));
-
-        // for(int j = 0; j < lAthletes.count(); j++){
-        //     if((*data)["Id"].toArray().at(j) == lAthletes.at(i).id){
-        //         painter->drawText(lRectRate.at(i), Qt::AlignVCenter | Qt::AlignHCenter, QString::number((*data)["Rates"].toArray().at(j).toDouble()));
-        //         painter->drawText(lRectAddRate.at(i), Qt::AlignVCenter | Qt::AlignHCenter, QString::number((*data)["AddRates"].toArray().at(j).toDouble()));
-
-        //         if((*data)["Place1"] == (*data)["Id"][j]){
-        //             painter->drawText(lRectPlace.at(i), Qt::AlignVCenter | Qt::AlignHCenter, "1");
-        //         }
-        //         else if((*data)["Place2"] == (*data)["Id"][j]){
-        //             painter->drawText(lRectPlace.at(i), Qt::AlignVCenter | Qt::AlignHCenter, "2");
-        //         }
-        //         else if((*data)["Place3"] == (*data)["Id"][j]){
-        //             painter->drawText(lRectPlace.at(i), Qt::AlignVCenter | Qt::AlignHCenter, "3");
-        //         }
-        //         else if((*data)["Place4"] == (*data)["Id"][j]){
-        //             painter->drawText(lRectPlace.at(i), Qt::AlignVCenter | Qt::AlignHCenter, "4");
-        //         }
-        //     }
-        // }
-
     }
 }
 
@@ -195,10 +155,6 @@ void Item_category_0_0::mousePressEvent(QGraphicsSceneMouseEvent * e)
         workFlags[i] = 0;
         if(lRectHover.at(i).contains(x, y)){
             workFlags[i] = 1;
-            // QJsonObject obj;
-            // obj.insert("Name", jArr.at(i).toObject().value("Name"));
-            // obj.insert("Team", jArr.at(i).toObject().value("Team"));
-            qDebug()<<jArr->at(i).toObject();
             emit sigSendToControlPanel(jArr->at(i).toObject());
         }
     }

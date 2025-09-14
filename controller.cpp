@@ -203,5 +203,5 @@ void Controller::slotFixResult(int id, QJsonObject obj)
 
 void Controller::slotSaveData(int id, QString strJson)
 {
-    bool ret = baseController->writeData(id, strJson);
+    baseController->writeData(id, strJson);
 }

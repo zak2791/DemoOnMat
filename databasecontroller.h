@@ -35,7 +35,7 @@ public:
                     );
 
 public slots:
-    bool writeData(int,                         //id категории
+    void writeData(int,                         //id категории
                    QString                      //данные
                    );
 

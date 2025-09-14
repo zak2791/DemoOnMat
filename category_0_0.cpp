@@ -79,14 +79,12 @@ void Category_0_0::setDataFromControlPanel(QJsonObject obj)
         if(o.value("Id").toInt() == id_athlete){
             jArr.removeAt(i);
             jArr.insert(i, obj);
-            //update();
             item->update();
-            qDebug()<<"update";
             continue;
         }
     }
 
-    QJsonDocument doc(obj);
+    QJsonDocument doc(jArr);
     QString strJson = doc.toJson(QJsonDocument::Compact);
     emit sigSaveData(id, strJson);
 }

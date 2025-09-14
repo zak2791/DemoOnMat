@@ -72,7 +72,6 @@ int DataBaseController::addCategory(int id_base,
              .arg("'" + age + "'")
              .arg("'" + weight + "'")
              .arg("'" + data + "'");
-    //qDebug()<<"sql = "<<sql;
     if(!query->exec(sql)){
         msgBox.setText("Ошибка добавления категории 2" + db.lastError().text());
         msgBox.exec();
@@ -82,8 +81,15 @@ int DataBaseController::addCategory(int id_base,
     return query->lastInsertId().toInt();
 }
 
-bool DataBaseController::writeData(int id, QString strJson)
+void DataBaseController::writeData(int id, QString strJson)
 {
-    qDebug()<<id<<strJson;
-    return true;
+    QMessageBox msgBox;
+    QString sql("UPDATE categories SET data = '%1' WHERE id = %2");
+    sql = sql.arg(strJson).arg(QString::number(id));
+    if(!query->exec(sql)){
+        msgBox.setText("Ошибка обновления данных" + db.lastError().text());
+        msgBox.exec();
+        qDebug()<<db.lastError().text();
+        return;
+    }
 }
