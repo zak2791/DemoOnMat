@@ -13,12 +13,14 @@ SOURCES += \
     category.cpp \
     category_0_0.cpp \
     connectiondialog.cpp \
+    connectionstatus.cpp \
     controller.cpp \
     controlpanel.cpp \
     controlpanel_0_0.cpp \
     databasecontroller.cpp \
     datatransfercontroller.cpp \
     item_category_0_0.cpp \
+    ledwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     server.cpp
@@ -27,12 +29,14 @@ HEADERS += \
     category.h \
     category_0_0.h \
     connectiondialog.h \
+    connectionstatus.h \
     controller.h \
     controlpanel.h \
     controlpanel_0_0.h \
     databasecontroller.h \
     datatransfercontroller.h \
     item_category_0_0.h \
+    ledwidget.h \
     mainwindow.h \
     server.h
 

@@ -52,3 +52,9 @@ void Category::setDataFromControlPanel(QJsonObject)
 {
 
 }
+
+void Category::setStatus(int _status)
+{
+    if(status == 2) return;
+    status = _status;
+}

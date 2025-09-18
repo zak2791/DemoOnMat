@@ -13,6 +13,9 @@ Controller::Controller(QListWidget* list, QObject *parent)
     transferController = new DataTransferController(&currentBaseName, this);
     listWidget = list;
     p = parent;
+    connect(transferController, &DataTransferController::sigConnect, this, [this](){
+        static_cast<MainWindow*>(p)->turnOnStatus();
+    });
 }
 
 Controller::~Controller()
@@ -32,6 +35,12 @@ void Controller::openCompetition(QString name)
     foreach (auto each, listCategories)
         delete each;
     listCategories.clear();
+
+    int index = currentBaseName.lastIndexOf("_");
+    QString name1 = currentBaseName.first(index);
+    QString name2 = currentBaseName.last(1);
+
+    static_cast<MainWindow*>(p)->openCompetition(name1 + "    Ковёр " + name2);
 
     foreach(auto each, listData){
         int id = std::get<0>(each);
@@ -82,71 +91,7 @@ bool Controller::addCategory(QString _data)
     QString weight =  obj.value("Weight").toString();
     QJsonArray data = obj.value("Data").toArray();
 
-    QJsonArray mainArray;
-    for(int i = 0; i < data.size(); i++){
-        QJsonObject o = data.at(i).toObject();
-        o.insert("CurrentTask", 0);
-        o.insert("TotalRate", 0.0);
-        o.insert("Task1Rate", 0.0);
-        o.insert("Task2Rate", 0.0);
-        o.insert("Task3Rate", 0.0);
-        o.insert("Task4Rate", 0.0);
-        o.insert("Task5Rate", 0.0);
-        o.insert("Task1Ref1Rate", 0.0);
-        o.insert("Task1Ref2Rate", 0.0);
-        o.insert("Task1Ref3Rate", 0.0);
-        o.insert("Task1Ref4Rate", 0.0);
-        o.insert("Task1Ref5Rate", 0.0);
-        o.insert("Task2Ref1Rate", 0.0);
-        o.insert("Task2Ref2Rate", 0.0);
-        o.insert("Task2Ref3Rate", 0.0);
-        o.insert("Task2Ref4Rate", 0.0);
-        o.insert("Task2Ref5Rate", 0.0);
-        o.insert("Task3Ref1Rate", 0.0);
-        o.insert("Task3Ref2Rate", 0.0);
-        o.insert("Task3Ref3Rate", 0.0);
-        o.insert("Task3Ref4Rate", 0.0);
-        o.insert("Task3Ref5Rate", 0.0);
-        o.insert("Task4Ref1Rate", 0.0);
-        o.insert("Task4Ref2Rate", 0.0);
-        o.insert("Task4Ref3Rate", 0.0);
-        o.insert("Task4Ref4Rate", 0.0);
-        o.insert("Task4Ref5Rate", 0.0);
-        o.insert("Task5Ref1Rate", 0.0);
-        o.insert("Task5Ref2Rate", 0.0);
-        o.insert("Task5Ref3Rate", 0.0);
-        o.insert("Task5Ref4Rate", 0.0);
-        o.insert("Task5Ref5Rate", 0.0);
-        o.insert("Task1Ref1Err", "");
-        o.insert("Task1Ref2Err", "");
-        o.insert("Task1Ref3Err", "");
-        o.insert("Task1Ref4Err", "");
-        o.insert("Task1Ref5Err", "");
-        o.insert("Task2Ref1Err", "");
-        o.insert("Task2Ref2Err", "");
-        o.insert("Task2Ref3Err", "");
-        o.insert("Task2Ref4Err", "");
-        o.insert("Task2Ref5Err", "");
-        o.insert("Task3Ref1Err", "");
-        o.insert("Task3Ref2Err", "");
-        o.insert("Task3Ref3Err", "");
-        o.insert("Task3Ref4Err", "");
-        o.insert("Task3Ref5Err", "");
-        o.insert("Task4Ref1Err", "");
-        o.insert("Task4Ref2Err", "");
-        o.insert("Task4Ref3Err", "");
-        o.insert("Task4Ref4Err", "");
-        o.insert("Task4Ref5Err", "");
-        o.insert("Task5Ref1Err", "");
-        o.insert("Task5Ref2Err", "");
-        o.insert("Task5Ref3Err", "");
-        o.insert("Task5Ref4Err", "");
-        o.insert("Task5Ref5Err", "");
-
-        mainArray.append(o);
-    }
-    QJsonDocument _doc(mainArray);
-    QString strJson(_doc.toJson(QJsonDocument::Compact));
+    QString strJson = createCategoryData(id_system, mode, data);
 
     int id = baseController->addCategory(id_base, id_system, mode, category, age, weight, strJson);
     if(id == -1)
@@ -155,15 +100,30 @@ bool Controller::addCategory(QString _data)
     if(id_system == 0){
         if(mode == 0){
             Category* cat = new Category_0_0(id, id_base, 0, category, age, weight, strJson);
+            connect(cat, &Category::sigScene, this, &Controller::setCategoryScene);
+            connect(cat, &Category::sigDataControlPanel, this, &Controller::slotDataControlPanel);
+            connect(cat, &Category::sigSaveData, this, &Controller::slotSaveData);
+            //connect(cat, &Category::sigSendData, transferController, &DataTransferController::sendOnMat);
             listCategories.append(cat);
+            QListWidgetItem* item  = new QListWidgetItem();
+            item->setSizeHint(cat->sizeHint());
+            item->setData(Qt::UserRole, id);
+            listWidget->addItem(item);
+            listWidget->setItemWidget(item, cat);
         }
     }
     return true;
 }
 
-void Controller::setCategoryScene(QGraphicsScene * scene)
+void Controller::setCategoryScene(QGraphicsScene * scene, Category* cat)
 {
     static_cast<MainWindow*>(p)->setCategoryScene(scene);
+    foreach(auto each, listCategories){
+        each->setStyleSheet("background-color: white");
+        each->setStatus(0);
+    }
+    cat->setStyleSheet("background-color: yellow");
+    cat->setStatus(1);
 }
 
 void Controller::slotDataControlPanel(int _id, int _id_system, QJsonObject obj)
@@ -204,4 +164,79 @@ void Controller::slotFixResult(int id, QJsonObject obj)
 void Controller::slotSaveData(int id, QString strJson)
 {
     baseController->writeData(id, strJson);
+}
+
+QString Controller::createCategoryData(int id_system, int mode, QJsonArray _arr){
+    if(id_system == 0){
+        if(mode == 0){
+            QJsonArray mainArray;
+            for(int i = 0; i < _arr.size(); i++){
+                QJsonObject o = _arr.at(i).toObject();
+                o.insert("CurrentTask", 0);
+                o.insert("TotalRate", 0.0);
+                o.insert("AddRate", 0);
+                o.insert("Task1Rate", 0.0);
+                o.insert("Task2Rate", 0.0);
+                o.insert("Task3Rate", 0.0);
+                o.insert("Task4Rate", 0.0);
+                o.insert("Task5Rate", 0.0);
+                o.insert("Task1Ref1Rate", 0.0);
+                o.insert("Task1Ref2Rate", 0.0);
+                o.insert("Task1Ref3Rate", 0.0);
+                o.insert("Task1Ref4Rate", 0.0);
+                o.insert("Task1Ref5Rate", 0.0);
+                o.insert("Task2Ref1Rate", 0.0);
+                o.insert("Task2Ref2Rate", 0.0);
+                o.insert("Task2Ref3Rate", 0.0);
+                o.insert("Task2Ref4Rate", 0.0);
+                o.insert("Task2Ref5Rate", 0.0);
+                o.insert("Task3Ref1Rate", 0.0);
+                o.insert("Task3Ref2Rate", 0.0);
+                o.insert("Task3Ref3Rate", 0.0);
+                o.insert("Task3Ref4Rate", 0.0);
+                o.insert("Task3Ref5Rate", 0.0);
+                o.insert("Task4Ref1Rate", 0.0);
+                o.insert("Task4Ref2Rate", 0.0);
+                o.insert("Task4Ref3Rate", 0.0);
+                o.insert("Task4Ref4Rate", 0.0);
+                o.insert("Task4Ref5Rate", 0.0);
+                o.insert("Task5Ref1Rate", 0.0);
+                o.insert("Task5Ref2Rate", 0.0);
+                o.insert("Task5Ref3Rate", 0.0);
+                o.insert("Task5Ref4Rate", 0.0);
+                o.insert("Task5Ref5Rate", 0.0);
+                o.insert("Task1Ref1Err", "");
+                o.insert("Task1Ref2Err", "");
+                o.insert("Task1Ref3Err", "");
+                o.insert("Task1Ref4Err", "");
+                o.insert("Task1Ref5Err", "");
+                o.insert("Task2Ref1Err", "");
+                o.insert("Task2Ref2Err", "");
+                o.insert("Task2Ref3Err", "");
+                o.insert("Task2Ref4Err", "");
+                o.insert("Task2Ref5Err", "");
+                o.insert("Task3Ref1Err", "");
+                o.insert("Task3Ref2Err", "");
+                o.insert("Task3Ref3Err", "");
+                o.insert("Task3Ref4Err", "");
+                o.insert("Task3Ref5Err", "");
+                o.insert("Task4Ref1Err", "");
+                o.insert("Task4Ref2Err", "");
+                o.insert("Task4Ref3Err", "");
+                o.insert("Task4Ref4Err", "");
+                o.insert("Task4Ref5Err", "");
+                o.insert("Task5Ref1Err", "");
+                o.insert("Task5Ref2Err", "");
+                o.insert("Task5Ref3Err", "");
+                o.insert("Task5Ref4Err", "");
+                o.insert("Task5Ref5Err", "");
+
+                mainArray.append(o);
+            }
+            QJsonDocument doc(mainArray);
+            return doc.toJson(QJsonDocument::Compact);
+        }
+        return "";
+    }
+    return "";
 }

@@ -34,7 +34,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     fillMenuLastCompetitions();
 
-
+    connectionStatus = new ConnectionStatus;
+    lblStatus = new QLabel(this);
+    status = new QStatusBar(this);
+    status->addWidget(lblStatus);
+    status->addPermanentWidget(connectionStatus);
+    setStatusBar(status);
 
 }
 
@@ -56,6 +61,16 @@ void MainWindow::setControlPanel(QWidget * wgt)
 void MainWindow::removeControlPanel(QWidget * wgt)
 {
     ui->verticalLayout->removeWidget(wgt);
+}
+
+void MainWindow::turnOnStatus()
+{
+    connectionStatus->setStatusOn();
+}
+
+void MainWindow::openCompetition(QString text)
+{
+    lblStatus->setText(text);
 }
 
 

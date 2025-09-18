@@ -39,6 +39,7 @@ public:
     int getBaseCategory(void){return id_base;}
     //int getIdSystem(void){return id_system;}
     int getId(void){return id;}
+    void setStatus(int);
 
 private:
     QLabel lblCategory;
@@ -71,7 +72,7 @@ signals:
                          QString    //data
                          );
 
-    void sigScene(QGraphicsScene*);
+    void sigScene(QGraphicsScene*, Category*);
 
     //////////////////////////////////////////////////////
     /// Сохранение данных в базе

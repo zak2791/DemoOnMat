@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "connectionstatus.h"
 #include "controller.h"
 #include "qdialog.h"
 
@@ -26,7 +27,8 @@ public:
     void setCategoryScene(QGraphicsScene*);
     void setControlPanel(QWidget*);
     void removeControlPanel(QWidget*);
-
+    void turnOnStatus(void);
+    void openCompetition(QString);
 
 
 private:
@@ -43,7 +45,9 @@ private:
     QJsonDocument getCurrentData();
 
     void fillMenuLastCompetitions(void);
-
+    ConnectionStatus* connectionStatus;
+    QStatusBar* status;
+    QLabel* lblStatus;
 
 
 };

@@ -36,6 +36,7 @@ private slots:
     void readyRead(void);
 
 signals:
+    void sigConnect(void);
 };
 
 #endif // DATATRANSFERCONTROLLER_H

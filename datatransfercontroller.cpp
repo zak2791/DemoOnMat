@@ -90,7 +90,9 @@ void DataTransferController::readPendingDatagrams()
         if(len < 6) return;
         name = name.first(len - 5);
         qDebug()<<datagram.data();
-        if(datagram.data() == name)
+        if(datagram.data() == name){
             udpSocket->writeDatagram("Mat1", datagram.senderAddress(), datagram.senderPort());
+            emit sigConnect();
+        }
     }
 }

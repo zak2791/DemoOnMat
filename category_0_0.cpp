@@ -43,6 +43,12 @@ Category_0_0::Category_0_0(int _id,
         emit sigDataControlPanel(id, id_system, o);
     });
 
+    connect(item, &Item_category_0_0::sigUpdateData, this, [this](){
+        QJsonDocument doc(jArr);
+        QString strJson = doc.toJson(QJsonDocument::Compact);
+        emit sigSaveData(id, strJson);
+    });
+
     s.addItem(item);
 
     // item = new Item_category_0_0(jObj);
@@ -93,5 +99,5 @@ void Category_0_0::mousePressEvent(QMouseEvent*)
 {
     item->clearWorkFlags();
     item->update();
-    emit sigScene(&s);
+    emit sigScene(&s, this);
 }

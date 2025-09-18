@@ -20,7 +20,7 @@ public:
     bool addCategory(QString);
 
 public slots:
-    void setCategoryScene(QGraphicsScene*);
+    void setCategoryScene(QGraphicsScene*, Category*);
 
 
 private:
@@ -34,6 +34,7 @@ private:
 
     QString currentBaseName;
     ControlPanel* panel = nullptr;
+    QString createCategoryData(int, int, QJsonArray);
 
 private slots:
     void slotDataControlPanel(int, int, QJsonObject);

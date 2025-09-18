@@ -83,11 +83,14 @@ private:
 
     QJsonArray* jArr;
 
-    // QJsonArray arrId;
-    // QJsonArray arrName;
-    // QJsonArray arrRange;
-    // QJsonArray arrTeam;
+    QString place1 = "";
+    QString place2 = "";
+    QString place3 = "";
+    QString place4 = "";
+
     int arrCount;
+    QMap<int, int> mapSortRates;
+    QList<QVariantList> listSortRates;
 
     int offsetText = 3;
     QList<QRect> lRectDraw;
@@ -106,10 +109,14 @@ private:
     QList<QRect> lRectPlace;
     QList<QRect> lRectHover;
     QList<bool> hoverFlags;
+    QList<bool> hoverAddRate;
     QList<bool> workFlags;
+    QRect rectRate;
+    bool hoverRate;
 
 signals:
     void sigSendToControlPanel(QJsonObject);
+    void sigUpdateData(void);
 
 };
 
