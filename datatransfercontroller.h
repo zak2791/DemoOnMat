@@ -2,6 +2,7 @@
 #define DATATRANSFERCONTROLLER_H
 
 #include "qtcpserver.h"
+#include "qtcpsocket.h"
 #include "qudpsocket.h"
 #include <QObject>
 
@@ -17,18 +18,24 @@ public:
     /// \brief sendData
     /// \return
     /// отправка данных на компьютер секретаря
-    /// _id - id базовой категории
+    ///
     /// _data - данные
     ///////////////////////////////////////////////
-    bool sendData(int _id, QString _data);
+    bool sendData(QString);
 
 private:
     QUdpSocket* udpSocket;
     QTcpServer* tcpServer;
     QTcpSocket* tcpSocket;
+    QTcpSocket* clientSocket;
     QString* dataBaseName;
     QString controlCheckSum(QByteArray);
     QObject* p;
+    QHostAddress address;
+    int portConn;
+    int portIn;
+    int portOut;
+    QByteArray addCheckSum(QString);
 
 private slots:
     void readPendingDatagrams(void);

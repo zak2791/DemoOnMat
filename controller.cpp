@@ -59,11 +59,10 @@ void Controller::openCompetition(QString name)
                 connect(cat, &Category::sigScene, this, &Controller::setCategoryScene);
                 connect(cat, &Category::sigDataControlPanel, this, &Controller::slotDataControlPanel);
                 connect(cat, &Category::sigSaveData, this, &Controller::slotSaveData);
-                //connect(cat, &Category::sigSendData, transferController, &DataTransferController::sendOnMat);
+                connect(cat, &Category::sigSendData, this, &Controller::slotSendData);
                 listCategories.append(cat);
                 QListWidgetItem* item  = new QListWidgetItem();
                 item->setSizeHint(cat->sizeHint());
-                item->setData(Qt::UserRole, id);
                 listWidget->addItem(item);
                 listWidget->setItemWidget(item, cat);
             }
@@ -103,13 +102,33 @@ bool Controller::addCategory(QString _data)
             connect(cat, &Category::sigScene, this, &Controller::setCategoryScene);
             connect(cat, &Category::sigDataControlPanel, this, &Controller::slotDataControlPanel);
             connect(cat, &Category::sigSaveData, this, &Controller::slotSaveData);
-            //connect(cat, &Category::sigSendData, transferController, &DataTransferController::sendOnMat);
+            connect(cat, &Category::sigSendData, this, &Controller::slotSendData);
             listCategories.append(cat);
             QListWidgetItem* item  = new QListWidgetItem();
             item->setSizeHint(cat->sizeHint());
-            item->setData(Qt::UserRole, id);
             listWidget->addItem(item);
             listWidget->setItemWidget(item, cat);
+        }
+    }
+    return true;
+}
+
+bool Controller::removeCategory(int _id)
+{
+    for(int i = 0; i < listCategories.length(); i++){
+        if(listCategories.at(i)->getBaseCategory() == _id){
+            if(listCategories.at(i)->getStatus() > 0)
+                return false;
+            int id = listCategories.at(i)->getId();
+            if(!baseController->removeCategory(id))
+                return false;
+            delete listCategories.at(i);
+            listCategories.remove(i);
+            QListWidgetItem* item = listWidget->item(i);
+            listWidget->removeItemWidget(item);
+            delete item;
+            listWidget->update();
+            return true;
         }
     }
     return true;
@@ -164,6 +183,28 @@ void Controller::slotFixResult(int id, QJsonObject obj)
 void Controller::slotSaveData(int id, QString strJson)
 {
     baseController->writeData(id, strJson);
+}
+
+void Controller::slotSendData(int _id, QString _data)
+{
+    if(transferController->sendData(_data)){
+        foreach (auto each, listCategories) {
+            if(each->getId() == _id){
+                each->setStatus(1);
+                baseController->updateStatus(_id, 1);
+                break;
+            }
+        }
+    }
+    else{
+        foreach (auto each, listCategories) {
+            if(each->getId() == _id){
+                each->setStatus(0);
+                baseController->updateStatus(_id, 0);
+                break;
+            }
+        }
+    }
 }
 
 QString Controller::createCategoryData(int id_system, int mode, QJsonArray _arr){

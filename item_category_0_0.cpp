@@ -179,7 +179,7 @@ void Item_category_0_0::mousePressEvent(QGraphicsSceneMouseEvent * e)
         QList<double> listRates;
         QList<int> listAddRates;
         for(int i = 0; i < count; i++){
-            if(i == 5) continue;
+            if(i == 5) break;
             listRates.append(listSortRates.at(i).at(1).toDouble());
             listAddRates.append(listSortRates.at(i).at(2).toInt());
         }
@@ -190,7 +190,7 @@ void Item_category_0_0::mousePressEvent(QGraphicsSceneMouseEvent * e)
         if(listRates.count() == 1) place1 = "1";
         else{
             for(int i = 1; i < listRates.count(); i++){
-                if(i == 5) continue;
+                if(i == 5) break;
                 if(listRates.at(i) == listRates.at(i - 1) && listAddRates.at(i) == listAddRates.at(i - 1)) return;
             }
             if(count == 2){

@@ -2,7 +2,7 @@
 #include "controller.h"
 #include "qdebug.h"
 #include "qnetworkdatagram.h"
-#include "qtcpsocket.h"
+#include "qsettings.h"
 
 DataTransferController::DataTransferController(QString * _dataBaseName, QObject *parent)
     : QObject{parent}
@@ -10,8 +10,19 @@ DataTransferController::DataTransferController(QString * _dataBaseName, QObject 
 
     p = parent;
     dataBaseName = _dataBaseName;
+
+    QSettings settings("settings.ini", QSettings::IniFormat);
+
+    settings.beginGroup("Connections");
+
+    portIn = settings.value("portIn", 5001).toInt();
+    portOut = settings.value("portOut", 5000).toInt();
+    portConn = settings.value("portConn", 5002).toInt();
+
+    settings.endGroup();
+
     udpSocket = new QUdpSocket(this);
-    udpSocket->bind(QHostAddress::Any, 5000);
+    udpSocket->bind(QHostAddress::Any, portConn);
     connect(udpSocket, &QUdpSocket::readyRead,
             this, &DataTransferController::readPendingDatagrams);
 
@@ -22,9 +33,11 @@ DataTransferController::DataTransferController(QString * _dataBaseName, QObject 
     connect(tcpServer, &QTcpServer::newConnection, this, &DataTransferController::newConnection);
     //connect(tcpServer, &QTcpServer::disconnect, this, &DataTransferController::newConnection);
 
-    qDebug()<<tcpServer->listen(QHostAddress::Any, 5001);
+    qDebug()<<tcpServer->listen(QHostAddress::Any, portIn);
 
+    address = QHostAddress();
 
+    clientSocket = new QTcpSocket(this);
 
 }
 
@@ -50,6 +63,14 @@ void DataTransferController::readyRead()
         return;
     }
     //qDebug()<<data;
+    if(data.contains("Remove")){
+        int id = data.last(data.length() - 6).toInt();
+        if(static_cast<Controller*>(p)->removeCategory(id))
+            tcpSocket->write("Ok");
+        else
+            tcpSocket->write("Err");
+        return;
+    }
     if((static_cast<Controller*>(p))->addCategory(data))
         tcpSocket->write("Ok");
     else
@@ -63,9 +84,29 @@ void DataTransferController::changeConnection()
     qDebug()<<"changeConnection";
 }
 
-bool DataTransferController::sendData(int _id, QString _data)
+bool DataTransferController::sendData(QString _data)
 {
-    return true;
+    qDebug()<<_data<<address;
+    if(address.isNull()) return false;
+    clientSocket->connectToHost(address, portOut);
+    qDebug()<<"conn";
+    if(!clientSocket->waitForConnected(1000)){
+        clientSocket->close();
+        qDebug()<<"conn"<<clientSocket->error();
+        return false;
+    }
+    clientSocket->write(addCheckSum(_data));
+    qDebug()<<clientSocket->waitForBytesWritten();
+    qDebug()<<"write";
+    if(!clientSocket->waitForReadyRead(1000)){
+        clientSocket->close();
+        qDebug()<<"conn"<<clientSocket->error();
+        return false;
+    }
+    QByteArray ba = clientSocket->readAll();
+    clientSocket->close();
+    if(ba == "Ok") return true;
+    return false;
 }
 
 QString DataTransferController::controlCheckSum(QByteArray _ba)
@@ -92,7 +133,24 @@ void DataTransferController::readPendingDatagrams()
         qDebug()<<datagram.data();
         if(datagram.data() == name){
             udpSocket->writeDatagram("Mat1", datagram.senderAddress(), datagram.senderPort());
+            address = datagram.senderAddress();
             emit sigConnect();
         }
+        else{
+            address = QHostAddress();
+        }
     }
+}
+
+QByteArray DataTransferController::addCheckSum(QString data)
+{
+    QByteArray ba = data.toUtf8();
+    qint16 checksum = qChecksum(ba);
+    //qDebug()<<"c"<<checksum<<ba;
+    char a = (checksum & 0xf000)>>12;
+    char b = (checksum & 0x0f00)>>8;
+    char c = (checksum & 0x00f0)>>4;
+    char d = checksum & 0x000f;
+    ba.append(a).append(b).append(c).append(d);
+    return ba;
 }

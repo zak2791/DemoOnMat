@@ -20,9 +20,10 @@ private:
     Ui::ConnectionDialog *ui;
 
     QSettings* settings;
-    int udpPort;
-    int tcpPort;
-    int httpPort;
+    int portConn;
+    int portIn;
+    int portOut;
+
 
 private slots:
     void slotAccepted(void);

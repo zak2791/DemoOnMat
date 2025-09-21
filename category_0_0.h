@@ -42,7 +42,7 @@ private:
     // float rate1
 
 
-
+    void slotSendingData(void);
     void mousePressEvent(QMouseEvent*);
 
 };

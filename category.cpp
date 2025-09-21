@@ -18,11 +18,13 @@ Category::Category(
     age = _age;
     weight = _weight;
     data = _data;
+    btnSending = new QPushButton("Отправить секретарю");
+    connect(btnSending, &QPushButton::clicked, this, &Category::slotSendingData);
 
     setFrameStyle(QFrame::WinPanel);
 
     QList<QFrame*> lFrame;
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < 3; i++){
         QFrame* line = new QFrame(this);
         line->setFrameShape(QFrame::VLine);
         line->setFrameShadow(QFrame::Sunken);
@@ -42,7 +44,11 @@ Category::Category(
     hbFirstRow->addWidget(&lblAge);
     hbFirstRow->addWidget(lFrame.at(1));
     hbFirstRow->addWidget(&lblWeight);
+    hbFirstRow->addWidget(lFrame.at(2));
+    hbFirstRow->addWidget(&lblStage);
     hbFirstRow->addStretch();
+    hbFirstRow->addWidget(btnSending);
+
 
     layout->addLayout(hbFirstRow);
     setLayout(layout);
@@ -57,4 +63,14 @@ void Category::setStatus(int _status)
 {
     if(status == 2) return;
     status = _status;
+}
+
+void Category::slotSendingData()
+{
+    qDebug()<<"send";
+}
+
+void Category::setSendingStatus()
+{
+
 }

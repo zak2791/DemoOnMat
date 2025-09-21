@@ -111,6 +111,8 @@ void ControlPanel_0_0::setData(int id, QJsonObject _obj)
     if(currentTask == 5) ui->btnNext->setEnabled(false);
     else ui->btnNext->setEnabled(true);
 
+    ui->btnFix->setEnabled(false);
+
     foreach(auto each, leRates){
         each->setStyleSheet("background-color: white");
         each->clear();

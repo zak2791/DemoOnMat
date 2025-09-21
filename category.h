@@ -4,6 +4,7 @@
 #include "qboxlayout.h"
 #include "qgraphicsscene.h"
 #include "qlabel.h"
+#include "qpushbutton.h"
 #include <QFrame>
 #include <QJsonObject>
 
@@ -39,6 +40,7 @@ public:
     int getBaseCategory(void){return id_base;}
     //int getIdSystem(void){return id_system;}
     int getId(void){return id;}
+    int getStatus(void){return status;}
     void setStatus(int);
 
 private:
@@ -57,6 +59,12 @@ protected:
     QVBoxLayout* layout;
     QHBoxLayout* hbFirstRow;
     QString data;
+    QPushButton* btnSending;    //кнопка отправки данных на компьютер секретаря
+    QLabel lblStage;            //этап - первый круг, полуфинал, финал...
+
+protected slots:
+    virtual void slotSendingData(void);
+    virtual void setSendingStatus();
 
 signals:
     /////////////////////////////////////////////////
@@ -80,6 +88,7 @@ signals:
     void sigSaveData(int,       //id категории
                      QString    //строка с json ланными
                      );
+    void sigSendData(int, QString);
 
 
 };

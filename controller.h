@@ -18,6 +18,7 @@ public:
     void openCompetition(QString);
     void changeConnection(void);
     bool addCategory(QString);
+    bool removeCategory(int);
 
 public slots:
     void setCategoryScene(QGraphicsScene*, Category*);
@@ -40,6 +41,7 @@ private slots:
     void slotDataControlPanel(int, int, QJsonObject);
     void slotFixResult(int, QJsonObject);
     void slotSaveData(int, QString);
+    void slotSendData(int, QString);
 
 };
 

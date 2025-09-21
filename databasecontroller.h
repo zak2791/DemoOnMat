@@ -34,10 +34,15 @@ public:
                     QString     //data
                     );
 
+    bool removeCategory(int);
+
 public slots:
     void writeData(int,                         //id категории
                    QString                      //данные
                    );
+    void updateStatus(int,                      //id категории
+                      int                       //status
+                      );
 
 private:
     QSqlDatabase db;

@@ -9,15 +9,19 @@ ConnectionDialog::ConnectionDialog(QWidget *parent)
 
     settings = new QSettings("settings.ini", QSettings::IniFormat);
     settings->beginGroup("connections");
-    udpPort = settings->value("udpPort", 5000).toInt();
-    tcpPort = settings->value("tcpPort", 5001).toInt();
+    portConn = settings->value("portConn", 5002).toInt();
+    portIn = settings->value("portIn", 5001).toInt();
+    portOut = settings->value("portOut", 5000).toInt();
     settings->endGroup();
 
-    ui->sbPortUDP->setValue(udpPort);
-    ui->sbPortTCP->setValue(tcpPort);
+    ui->sbConn->setValue(portConn);
+    ui->sbIn->setValue(portIn);
+    ui->sbOut->setValue(portOut);
 
-    connect(ui->sbPortUDP, &QSpinBox::valueChanged, this, [this](int value){udpPort = value;});
-    connect(ui->sbPortTCP, &QSpinBox::valueChanged, this, [this](int value){tcpPort = value;});
+    connect(ui->sbConn, &QSpinBox::valueChanged, this, [this](int value){portConn = value;});
+    connect(ui->sbIn, &QSpinBox::valueChanged, this, [this](int value){portIn = value;});
+    connect(ui->sbOut, &QSpinBox::valueChanged, this, [this](int value){portOut = value;});
+
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &ConnectionDialog::slotAccepted);
 
@@ -32,7 +36,8 @@ void ConnectionDialog::slotAccepted()
 {
     settings = new QSettings("settings.ini", QSettings::IniFormat);
     settings->beginGroup("connections");
-    settings->setValue("udpPort", udpPort);
-    settings->setValue("tcpPort", tcpPort);
+    settings->setValue("portConn", portConn);
+    settings->setValue("portIn", portIn);
+    settings->setValue("portOut", portOut);
     settings->endGroup();
 }

@@ -81,6 +81,20 @@ int DataBaseController::addCategory(int id_base,
     return query->lastInsertId().toInt();
 }
 
+bool DataBaseController::removeCategory(int id)
+{
+    QMessageBox msgBox;
+    QString sql("DELETE FROM categories WHERE id = %1");
+    sql = sql.arg(QString::number(id));
+    if(!query->exec(sql)){
+        msgBox.setText("Ошибка удаления категории" + db.lastError().text());
+        msgBox.exec();
+        qDebug()<<db.lastError().text();
+        return false;
+    }
+    return true;
+}
+
 void DataBaseController::writeData(int id, QString strJson)
 {
     QMessageBox msgBox;
@@ -92,4 +106,9 @@ void DataBaseController::writeData(int id, QString strJson)
         qDebug()<<db.lastError().text();
         return;
     }
+}
+
+void DataBaseController::updateStatus(int, int)
+{
+
 }
