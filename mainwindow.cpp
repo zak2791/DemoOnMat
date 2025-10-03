@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 
 #include "connectiondialog.h"
-#include "controlpanel_0_0.h"
+#include "controlpanel_0.h"
 #include "ui_mainwindow.h"
 
 #include <QSettings>

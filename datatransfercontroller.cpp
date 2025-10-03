@@ -76,7 +76,6 @@ void DataTransferController::readyRead()
     else
         tcpSocket->write("Err");
     // tcpSocket->close();
-    qDebug() << data;
 }
 
 void DataTransferController::changeConnection()
@@ -95,6 +94,7 @@ bool DataTransferController::sendData(QString _data)
         qDebug()<<"conn"<<clientSocket->error();
         return false;
     }
+    qDebug()<<addCheckSum(_data);
     clientSocket->write(addCheckSum(_data));
     qDebug()<<clientSocket->waitForBytesWritten();
     qDebug()<<"write";
@@ -105,6 +105,7 @@ bool DataTransferController::sendData(QString _data)
     }
     QByteArray ba = clientSocket->readAll();
     clientSocket->close();
+    qDebug()<<ba;
     if(ba == "Ok") return true;
     return false;
 }
@@ -146,7 +147,7 @@ QByteArray DataTransferController::addCheckSum(QString data)
 {
     QByteArray ba = data.toUtf8();
     qint16 checksum = qChecksum(ba);
-    //qDebug()<<"c"<<checksum<<ba;
+    qDebug()<<"c"<<checksum;
     char a = (checksum & 0xf000)>>12;
     char b = (checksum & 0x0f00)>>8;
     char c = (checksum & 0x00f0)>>4;

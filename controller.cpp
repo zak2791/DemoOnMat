@@ -1,6 +1,8 @@
 #include "controller.h"
-#include "category_0_0.h"
-#include "controlpanel_0_0.h"
+#include "category_0.h"
+#include "category_1.h"
+#include "controlpanel_0.h"
+#include "controlpanel_1.h"
 #include "mainwindow.h"
 #include "qdebug.h"
 #include "qjsonobject.h"
@@ -55,7 +57,33 @@ void Controller::openCompetition(QString name)
 
         if(id_system == 0){
             if(mode == 0){
-                Category* cat = new Category_0_0(id, id_category, status, category, age, weight, data);
+                Category* cat = new Category_0(id, id_category, status, category, age, weight, data);
+                connect(cat, &Category::sigScene, this, &Controller::setCategoryScene);
+                connect(cat, &Category::sigDataControlPanel, this, &Controller::slotDataControlPanel);
+                connect(cat, &Category::sigSaveData, this, &Controller::slotSaveData);
+                connect(cat, &Category::sigSendData, this, &Controller::slotSendData);
+                listCategories.append(cat);
+                QListWidgetItem* item  = new QListWidgetItem();
+                item->setSizeHint(cat->sizeHint());
+                listWidget->addItem(item);
+                listWidget->setItemWidget(item, cat);
+            }
+        }
+        else if(id_system == 1){
+            if(mode == 0){
+                Category* cat = new Category_0(id, id_category, status, category, age, weight, data);
+                connect(cat, &Category::sigScene, this, &Controller::setCategoryScene);
+                connect(cat, &Category::sigDataControlPanel, this, &Controller::slotDataControlPanel);
+                connect(cat, &Category::sigSaveData, this, &Controller::slotSaveData);
+                connect(cat, &Category::sigSendData, this, &Controller::slotSendData);
+                listCategories.append(cat);
+                QListWidgetItem* item  = new QListWidgetItem();
+                item->setSizeHint(cat->sizeHint());
+                listWidget->addItem(item);
+                listWidget->setItemWidget(item, cat);
+            }
+            else if(mode == 2){
+                Category* cat = new Category_1(id, id_category, status, category, age, weight, data);
                 connect(cat, &Category::sigScene, this, &Controller::setCategoryScene);
                 connect(cat, &Category::sigDataControlPanel, this, &Controller::slotDataControlPanel);
                 connect(cat, &Category::sigSaveData, this, &Controller::slotSaveData);
@@ -89,27 +117,32 @@ bool Controller::addCategory(QString _data)
     QString age =  obj.value("Age").toString();
     QString weight =  obj.value("Weight").toString();
     QJsonArray data = obj.value("Data").toArray();
-
+    //qDebug() << "-------------------"<<_data<<data;
     QString strJson = createCategoryData(id_system, mode, data);
 
     int id = baseController->addCategory(id_base, id_system, mode, category, age, weight, strJson);
     if(id == -1)
         return false;
 
+    Category* cat = nullptr;
     if(id_system == 0){
-        if(mode == 0){
-            Category* cat = new Category_0_0(id, id_base, 0, category, age, weight, strJson);
-            connect(cat, &Category::sigScene, this, &Controller::setCategoryScene);
-            connect(cat, &Category::sigDataControlPanel, this, &Controller::slotDataControlPanel);
-            connect(cat, &Category::sigSaveData, this, &Controller::slotSaveData);
-            connect(cat, &Category::sigSendData, this, &Controller::slotSendData);
-            listCategories.append(cat);
-            QListWidgetItem* item  = new QListWidgetItem();
-            item->setSizeHint(cat->sizeHint());
-            listWidget->addItem(item);
-            listWidget->setItemWidget(item, cat);
-        }
+        if(mode == 0)
+            cat = new Category_0(id, id_base, 0, category, age, weight, strJson);
+    } else if(id_system == 1){
+        if(mode == 0)
+            cat = new Category_0(id, id_base, 0, category, age, weight, strJson);
+        else if(mode == 2)
+            cat = new Category_1(id, id_base, 0, category, age, weight, strJson);
     }
+    connect(cat, &Category::sigScene, this, &Controller::setCategoryScene);
+    connect(cat, &Category::sigDataControlPanel, this, &Controller::slotDataControlPanel);
+    connect(cat, &Category::sigSaveData, this, &Controller::slotSaveData);
+    connect(cat, &Category::sigSendData, this, &Controller::slotSendData);
+    listCategories.append(cat);
+    QListWidgetItem* item  = new QListWidgetItem();
+    item->setSizeHint(cat->sizeHint());
+    listWidget->addItem(item);
+    listWidget->setItemWidget(item, cat);
     return true;
 }
 
@@ -152,18 +185,18 @@ void Controller::slotDataControlPanel(int _id, int _id_system, QJsonObject obj)
             static_cast<MainWindow*>(p)->removeControlPanel(panel);
             delete panel;
             if(_id_system == 0)
-                panel = new ControlPanel_0_0;
-            else
-                panel = new ControlPanel_0_0;
+                panel = new ControlPanel_0;
+            else                                // if(_id_system == 1)
+                panel = new ControlPanel_1;
             static_cast<MainWindow*>(p)->setControlPanel(panel);
             connect(panel, &ControlPanel::sigFixResult, this, &Controller::slotFixResult);
         }
     }
     else{
         if(_id_system == 0)
-            panel = new ControlPanel_0_0;
-        else
-            panel = new ControlPanel_0_0;
+            panel = new ControlPanel_0;
+        else                                    // if(_id_system == 1)
+            panel = new ControlPanel_1;
         static_cast<MainWindow*>(p)->setControlPanel(panel);
     }
     panel->setData(_id, obj);
@@ -190,8 +223,8 @@ void Controller::slotSendData(int _id, QString _data)
     if(transferController->sendData(_data)){
         foreach (auto each, listCategories) {
             if(each->getId() == _id){
-                each->setStatus(1);
-                baseController->updateStatus(_id, 1);
+                each->setStatus(3);
+                baseController->updateStatus(_id, 3);
                 break;
             }
         }
@@ -199,8 +232,8 @@ void Controller::slotSendData(int _id, QString _data)
     else{
         foreach (auto each, listCategories) {
             if(each->getId() == _id){
-                each->setStatus(0);
-                baseController->updateStatus(_id, 0);
+                each->setStatus(2);
+                baseController->updateStatus(_id, 2);
                 break;
             }
         }
@@ -208,8 +241,8 @@ void Controller::slotSendData(int _id, QString _data)
 }
 
 QString Controller::createCategoryData(int id_system, int mode, QJsonArray _arr){
-    if(id_system == 0){
-        if(mode == 0){
+    if(id_system == 0 || id_system == 1){
+        if(mode == 0 || mode == 2){
             QJsonArray mainArray;
             for(int i = 0; i < _arr.size(); i++){
                 QJsonObject o = _arr.at(i).toObject();
@@ -274,9 +307,11 @@ QString Controller::createCategoryData(int id_system, int mode, QJsonArray _arr)
 
                 mainArray.append(o);
             }
+
             QJsonDocument doc(mainArray);
             return doc.toJson(QJsonDocument::Compact);
         }
+
         return "";
     }
     return "";

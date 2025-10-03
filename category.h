@@ -1,6 +1,7 @@
 #ifndef CATEGORY_H
 #define CATEGORY_H
 
+#include "ledwidget.h"
 #include "qboxlayout.h"
 #include "qgraphicsscene.h"
 #include "qlabel.h"
@@ -27,8 +28,11 @@ class Category : public QFrame
     Q_OBJECT
 public:
     Category(int,       // id категории
-             int,       // id базовой категории (с коьпьютера секретаря)
-             int,       // 0 - статус
+             int,       // id базовой категории (с компьютера секретаря)
+             int,       // статус: 0 - исходный
+                        //         1 - категория выбрана
+                        //         2 - категория имеет зафиксироанные оценки
+                        //         3 - оценки отправлены секретарю
              QString,   // категория
              QString,   // возраст
              QString,   // вес
@@ -40,7 +44,7 @@ public:
     int getBaseCategory(void){return id_base;}
     //int getIdSystem(void){return id_system;}
     int getId(void){return id;}
-    int getStatus(void){return status;}
+    int getStatus(void);
     void setStatus(int);
 
 private:
@@ -61,6 +65,7 @@ protected:
     QString data;
     QPushButton* btnSending;    //кнопка отправки данных на компьютер секретаря
     QLabel lblStage;            //этап - первый круг, полуфинал, финал...
+    LEDWidget* ledStatus;
 
 protected slots:
     virtual void slotSendingData(void);
@@ -74,6 +79,9 @@ signals:
     void sigDataControlPanel(
                              int,           //id
                              int,           //id_system
+                                            //0 - общий круг
+                                            //2 - финал
+                                            //1 - полуфиналы
                              QJsonObject    //data
                              );
     void sigDataTransfer(int,       //id_base

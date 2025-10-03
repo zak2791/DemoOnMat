@@ -24,7 +24,7 @@ Category::Category(
     setFrameStyle(QFrame::WinPanel);
 
     QList<QFrame*> lFrame;
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 4; i++){
         QFrame* line = new QFrame(this);
         line->setFrameShape(QFrame::VLine);
         line->setFrameShadow(QFrame::Sunken);
@@ -38,6 +38,7 @@ Category::Category(
     //lblCategory.setFrameStyle(QFrame::NoFrame);
     lblAge.setText(age);
     lblWeight.setText(weight);
+    ledStatus = new LEDWidget(0);
 
     hbFirstRow->addWidget(&lblCategory);
     hbFirstRow->addWidget(lFrame.at(0));
@@ -47,11 +48,18 @@ Category::Category(
     hbFirstRow->addWidget(lFrame.at(2));
     hbFirstRow->addWidget(&lblStage);
     hbFirstRow->addStretch();
+    hbFirstRow->addWidget(lFrame.at(3));
+    hbFirstRow->addWidget(new QLabel("Результаты у секретаря"));
+    hbFirstRow->addWidget(ledStatus);
     hbFirstRow->addWidget(btnSending);
 
+    QLayout* lay = hbFirstRow->layout();
+    lay->setAlignment(ledStatus, Qt::AlignVCenter);
 
     layout->addLayout(hbFirstRow);
     setLayout(layout);
+
+    if(status == 3) ledStatus->turnOnOff(true);
 }
 
 void Category::setDataFromControlPanel(QJsonObject)
@@ -59,10 +67,16 @@ void Category::setDataFromControlPanel(QJsonObject)
 
 }
 
+int Category::getStatus(){
+    return status;
+}
+
 void Category::setStatus(int _status)
 {
-    if(status == 2) return;
+    if(_status == 0 && status > 1) return;
     status = _status;
+    if(status == 2) ledStatus->turnOnOff(false);
+    if(status == 3) ledStatus->turnOnOff(true);
 }
 
 void Category::slotSendingData()

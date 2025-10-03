@@ -108,7 +108,15 @@ void DataBaseController::writeData(int id, QString strJson)
     }
 }
 
-void DataBaseController::updateStatus(int, int)
+void DataBaseController::updateStatus(int id, int status)
 {
-
+    QMessageBox msgBox;
+    QString sql("UPDATE categories SET status = '%1' WHERE id = %2");
+    sql = sql.arg(status).arg(QString::number(id));
+    if(!query->exec(sql)){
+        msgBox.setText("Ошибка обновления данных" + db.lastError().text());
+        msgBox.exec();
+        qDebug()<<db.lastError().text();
+        return;
+    }
 }

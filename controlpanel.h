@@ -12,11 +12,9 @@ public:
     int getIdSystem(void){return id_system;}
     virtual void setData(int, QJsonObject) = 0;
 
-private:
-    int id_system;
-
 protected:
     int id_category;
+    int id_system;
 
 signals:
     void sigFixResult(int, QJsonObject);
