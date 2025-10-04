@@ -25,6 +25,9 @@ private:
     QJsonObject objRed;
     QJsonObject objBlue;
 
+    QJsonObject objFirst;
+    QJsonObject objSecond;
+
     int currentTask;
     double totalRateRed;
     double totalRateBlue;

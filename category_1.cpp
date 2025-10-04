@@ -37,18 +37,24 @@ Category_1::Category_1(int _id,
 
 void Category_1::setDataFromControlPanel(QJsonObject obj)
 {
-    int id_athlete = obj.value("Id").toInt();
-    for(int i = 0; i < jArr.count(); i++){
-        QJsonObject o = jArr.at(i).toObject();
-        if(o.value("Id").toInt() == id_athlete){
-            jArr.removeAt(i);
-            jArr.insert(i, obj);
-            item->update();
-            break;
-        }
-    }
+    // int id_athlete = obj.value("Id").toInt();
+    // for(int i = 0; i < jArr.count(); i++){
+    //     QJsonObject o = jArr.at(i).toObject();
+    //     if(o.value("Id").toInt() == id_athlete){
+    //         jArr.removeAt(i);
+    //         jArr.insert(i, obj);
+    //         item->update();
+    //         break;
+    //     }
+    // }
+    qDebug()<<obj;
+    QJsonArray a;
+    a.push_back(obj.value("Red"));
+    a.push_back(obj.value("Blue"));
+    //jArr.erase(jArr.begin(), jArr.end());
+    QJsonDocument doc(a);
 
-    QJsonDocument doc(jArr);
+    jArr = a;
     QString strJson = doc.toJson(QJsonDocument::Compact);
     emit sigSaveData(id, strJson);
 }
